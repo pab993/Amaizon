@@ -10,17 +10,26 @@
                                     <img src="{% static 'products/images/logo.png' %}" class="img-responsive" alt="Conxole Admin"/>
 
                             <div class="panel-body">
-                                <form accept-charset="UTF-8" role="form" class="form-signin">
+                                <form method="post" role="form" action="{% url 'login_user' %}" class="form-signin">
+                                    {% csrf_token %}
                                     <fieldset>
                                         <label class="panel-login">
                                             <div class="login_result"></div>
                                         </label>
-                                        <input class="form-control" placeholder="Username" id="username" type="text">
-                                        <input class="form-control" placeholder="Password" id="password" type="password">
-                                        <br></br>
+                                        <input class="form-control" placeholder="Username" id="username" name="username" type="text">
+                                        <input class="form-control" placeholder="Password" id="password" name="password" type="password">
+                                        <br>
+
+                                        {% if error_message %}
+                                            <p style="color:red;"><strong>{{ error_message }}</strong></p>
+                                        {% endif %}
+
                                         <input class="btn btn-lg btn-success btn-block" type="submit" id="login" value="Login »">
                                     </fieldset>
                                 </form>
+                                 <div class="panel-footer">
+                                     Don't have an account? <a href="{% url 'register' %}">Click here</a> to register.
+                                 </div>
                             </div>
                         </div>
                     </div>
