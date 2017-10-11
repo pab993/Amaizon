@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Amaizon</title>
+    {% load staticfiles %}
+
+     <link rel="shortcut icon" type="image/png" href="{%  static 'products/images/favicon.ico' %}"/>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href="{% static 'products/style.css' %}"/>
+
+</head>
+<body>
+
+    <script src="http://mymaplist.com/js/vendor/TweenLite.min.js"></script>
+    {% block body %}
+    {% endblock %}
+
+<!-- Footer -->
+    <div class="container">
+      <div class="row">
+      <hr>
+        <div class="col-lg-12">
+          <div class="col-md-8">
+            <a href="#">Terms of Service</a> | <a href="#">Privacy</a>
+          </div>
+          <div class="col-md-4">
+            <p class="muted pull-right">© 2017 Amaizon S.L. All rights reserved</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>
