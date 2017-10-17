@@ -31,7 +31,7 @@
                <!-- <li class="{% block albums_active %}{% endblock %}"><a href=""><span class="glyphicon glyphicon-cd" aria-hidden="true"></span>&nbsp; Albums</a></li>
                 <li class="{% block songs_active %}{% endblock %}"><a href=""><span class="glyphicon glyphicon-music" aria-hidden="true"></span>&nbsp; Songs</a></li>-->
             </ul>
-            <form class="navbar-form navbar-left" role="search" method="get" action="">
+            <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'index' %}">
                 <div class="form-group">
                     <input type="text" class="form-control" name="q" value="{{ request.GET.q }}">
                 </div>
@@ -56,5 +56,21 @@
 
 {% block body %}
 {% endblock %}
+
+
+<!-- Footer -->
+    <div class="container">
+      <div class="row">
+      <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+        <div class="col-lg-12">
+          <div class="col-md-8">
+            <a href="#">Terms of Service</a> | <a href="#">Privacy</a>
+          </div>
+          <div class="col-md-4">
+            <p class="muted pull-right">© 2017 Amaizon S.L. All rights reserved</p>
+          </div>
+        </div>
+      </div>
+    </div>
 </body>
 </html>

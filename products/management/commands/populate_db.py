@@ -21,7 +21,9 @@ class Command(BaseCommand):
             ['Binding of Isaac', 'The Binding of Isaac is an indie roguelike video game designed by Edmund McMillen and Florian Himsl, initially released in 2011 for Microsoft Windows; the game was later ported for OS X, and Linux operating systems.', 20.0, 'C:\\Users\\pab99\\Documents\\TFG\\Amaizon\\media\\binding_of_isaac.jpg',
              '2014-05-20 00:00:00'],
             ['The legend of Zelda: Breath of the Wild', 'The Legend of Zelda: Breath of the Wild is an action-adventure video game developed and published by Nintendo for the Nintendo Switch and Wii U video game consoles. The game is a part of The Legend of Zelda series, and follows amnesiac protagonist Link, who awakens from a hundred-year slumber to a mysterious voice that guides him to defeat Calamity Ganon before he can destroy the kingdom of Hyrule.',
-             49.99, 'C:\\Users\\pab99\\Documents\\TFG\\Amaizon\\media\\zelda.jpg', '2017-03-12 00:00:00']]
+             49.99, 'C:\\Users\\pab99\\Documents\\TFG\\Amaizon\\media\\zelda.jpg', '2017-03-12 00:00:00'],
+            ['Watch Dogs', 'Watch Dogs (stylized as WATCH_DOGS) is an action-adventure video game developed by Ubisoft Montreal and published by Ubisoft.', 35.69, 'C:\\Users\\pab99\\Documents\\TFG\\Amaizon\\media\\watchdogs.jpg', '2015-11-01 00:00:00'],
+            ['BloodBorne', "Bloodborne is an action role-playing video game developed by FromSoftware and published by Sony Computer Entertainment for PlayStation 4. Officially announced at Sony's Electronic Entertainment Expo 2014 conference, the game was released worldwide in March 2015.", 39.99, 'C:\\Users\\pab99\\Documents\\TFG\\Amaizon\\media\\bloodborne.png', '2015-07-05 00:00:00']]
 
         amaizon_users = [['user1', 'user1'], ['user2', 'user2'], ['user3', 'user3'], ['user4', 'user4'], ['user5', 'user5'], ['user6', 'user6'], ['user7', 'user7'], ['user8', 'user8'], ['user9', 'user9'], ['user10', 'user10']]
 

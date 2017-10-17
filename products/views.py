@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.template import loader
+from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import ProductForm, AssessmentForm, UserForm
 from .models import Product
 
@@ -10,7 +12,17 @@ from .models import Product
 
 def login_page(request):
     if request.user.is_authenticated():
-        products = Product.objects.all()
+        products_list = Product.objects.all()
+        paginator = Paginator(products_list, 5)
+        page = request.GET.get('page')
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            products = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            products = paginator.page(paginator.num_pages)
         context = {"products": products}
         return render(request, 'products/index.html', context)
     else:
@@ -19,7 +31,17 @@ def login_page(request):
 
 def login_user(request):
     if request.user.is_authenticated():
-        products = Product.objects.all()
+        products_list = Product.objects.all()
+        paginator = Paginator(products_list, 5)
+        page = request.GET.get('page')
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            products = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            products = paginator.page(paginator.num_pages)
         context = {"products": products}
         return render(request, 'products/index.html', context)
     else:
@@ -42,7 +64,17 @@ def login_user(request):
 
 def register(request):
     if request.user.is_authenticated():
-        products = Product.objects.all()
+        products_list = Product.objects.all()
+        paginator = Paginator(products_list, 5)
+        page = request.GET.get('page')
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            products = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            products = paginator.page(paginator.num_pages)
         context = {"products": products}
         return render(request, 'products/index.html', context)
     else:
@@ -71,9 +103,38 @@ def index(request):
     if not request.user.is_authenticated():
         return render(request, 'products/login_page.html')
     else:
-        products = Product.objects.all()
-        context = {"products": products}
-        return render(request, 'products/index.html', context)
+        products_list = Product.objects.all()
+        query = request.GET.get("q")
+        if query:
+            products_filtered = products_list.filter(
+                Q(name__icontains=query) |
+                Q(description__icontains=query)
+            ).distinct()
+            paginator = Paginator(products_filtered, 5)
+            page = request.GET.get('page')
+            try:
+                products = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                products = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                products = paginator.page(paginator.num_pages)
+            context = {"products": products}
+            return render(request, 'products/index.html', context)
+        else:
+            paginator = Paginator(products_list, 5)
+            page = request.GET.get('page')
+            try:
+                products = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                products = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                products = paginator.page(paginator.num_pages)
+            context = {"products": products}
+            return render(request, 'products/index.html', context)
 
 
 def logout_user(request):
