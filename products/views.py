@@ -144,3 +144,7 @@ def logout_user(request):
         "form": form,
     }
     return render(request, 'products/login_page.html', context)
+
+
+def profile(request):
+    return render(request, 'products/profile.html')

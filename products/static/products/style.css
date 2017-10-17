@@ -59,6 +59,12 @@ body{
     padding: 10px 0;
 }
 
+.ts{
+    white-space: nowrap;
+    width: 20em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 
 
