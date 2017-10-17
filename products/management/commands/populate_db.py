@@ -25,7 +25,7 @@ class Command(BaseCommand):
             ['Watch Dogs', 'Watch Dogs (stylized as WATCH_DOGS) is an action-adventure video game developed by Ubisoft Montreal and published by Ubisoft.', 35.69, 'C:\\Users\\pab99\\Documents\\TFG\\Amaizon\\media\\watchdogs.jpg', '2015-11-01 00:00:00'],
             ['BloodBorne', "Bloodborne is an action role-playing video game developed by FromSoftware and published by Sony Computer Entertainment for PlayStation 4. Officially announced at Sony's Electronic Entertainment Expo 2014 conference, the game was released worldwide in March 2015.", 39.99, 'C:\\Users\\pab99\\Documents\\TFG\\Amaizon\\media\\bloodborne.png', '2015-07-05 00:00:00']]
 
-        amaizon_users = [['user1', 'user1'], ['user2', 'user2'], ['user3', 'user3'], ['user4', 'user4'], ['user5', 'user5'], ['user6', 'user6'], ['user7', 'user7'], ['user8', 'user8'], ['user9', 'user9'], ['user10', 'user10']]
+        amaizon_users = [['user1', 'user1', 'user1@user1.com'], ['user2', 'user2', 'user2@user2.com'], ['user3', 'user3', 'user3@user3.com'], ['user4', 'user4', 'user4@user4.com'], ['user5', 'user5', 'user5@user5.com'], ['user6', 'user6', 'user6@user6.com'], ['user7', 'user7', 'user7@user7.com'], ['user8', 'user8', 'user8@user8.com'], ['user9', 'user9', 'user9@user9.com'], ['user10', 'user10', 'user10@user10.com']]
 
         for i in range(len(amaizon_products)):
             f = open(amaizon_products[i][3], 'rb')
@@ -34,7 +34,8 @@ class Command(BaseCommand):
             p.save()
 
         for j in range(len(amaizon_users)):
-            u = User(username=amaizon_users[j][0], password=amaizon_users[j][1])
+            #u = User(username=amaizon_users[j][0], password=amaizon_users[j][1])
+            u = User.objects.create_user(username=amaizon_users[j][0], email=amaizon_users[j][2], password=amaizon_users[j][1])
             u.save()
 
     def handle(self, *args, **options):
