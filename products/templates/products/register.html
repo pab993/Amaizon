@@ -1,5 +1,7 @@
 {% extends 'products/base_visitor.html' %}
 {% block title %}Register{% endblock %}
+{% load staticfiles %}
+
 
 {% block body %}
 
@@ -20,7 +22,9 @@
                           <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
                               {% csrf_token %}
                               <fieldset>
+
                                   {% include 'products/form_template.html' %}
+
                               </fieldset>
 
                             <div class="form-group">
@@ -33,7 +37,7 @@
                 </div>
 
                 <div class="panel-footer">
-                    Already have an account? <a href="{% url 'index' %}">Click here</a> to log in.
+                    Already have an account? <a href="{% url 'login_page' %}">Click here</a> to log in.
                 </div>
             </div>
         </div>
