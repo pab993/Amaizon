@@ -1,11 +1,10 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
-from django.template import loader
+from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import ProductForm, AssessmentForm, UserForm
+from .forms import UserForm
 from .models import Product
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -13,7 +12,7 @@ from .models import Product
 def login_page(request):
     if request.user.is_authenticated():
         products_list = Product.objects.all()
-        paginator = Paginator(products_list, 5)
+        paginator = Paginator(products_list, 4)
         page = request.GET.get('page')
         try:
             products = paginator.page(page)
@@ -31,8 +30,8 @@ def login_page(request):
 
 def login_user(request):
     if request.user.is_authenticated():
-        products_list = Product.objects.all()
-        paginator = Paginator(products_list, 5)
+        products_list = Product.objects.all().order_by('-pub_date')
+        paginator = Paginator(products_list, 4)
         page = request.GET.get('page')
         try:
             products = paginator.page(page)
@@ -52,8 +51,8 @@ def login_user(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    products_list = Product.objects.all()
-                    paginator = Paginator(products_list, 5)
+                    products_list = Product.objects.all().order_by('-pub_date')
+                    paginator = Paginator(products_list, 4)
                     page = request.GET.get('page')
                     try:
                         products = paginator.page(page)
@@ -74,8 +73,8 @@ def login_user(request):
 
 def register(request):
     if request.user.is_authenticated():
-        products_list = Product.objects.all()
-        paginator = Paginator(products_list, 5)
+        products_list = Product.objects.all().order_by('-pub_date')
+        paginator = Paginator(products_list, 4)
         page = request.GET.get('page')
         try:
             products = paginator.page(page)
@@ -100,7 +99,7 @@ def register(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    products = Product.objects.all()
+                    products = Product.objects.all().order_by('-pub_date')
                     context = {'products': products}
                     return render(request, 'products/index.html', context)
         context = {
@@ -113,14 +112,14 @@ def index(request):
     if not request.user.is_authenticated():
         return render(request, 'products/login_page.html')
     else:
-        products_list = Product.objects.all()
+        products_list = Product.objects.all().order_by('-pub_date')
         query = request.GET.get("q")
         if query:
             products_filtered = products_list.filter(
                 Q(name__icontains=query) |
                 Q(description__icontains=query)
             ).distinct()
-            paginator = Paginator(products_filtered, 5)
+            paginator = Paginator(products_filtered, 4)
             page = request.GET.get('page')
             try:
                 products = paginator.page(page)
@@ -133,7 +132,7 @@ def index(request):
             context = {"products": products}
             return render(request, 'products/index.html', context)
         else:
-            paginator = Paginator(products_list, 5)
+            paginator = Paginator(products_list, 4)
             page = request.GET.get('page')
             try:
                 products = paginator.page(page)
@@ -156,5 +155,13 @@ def logout_user(request):
     return render(request, 'products/login_page.html', context)
 
 
-def profile(request):
-    return render(request, 'products/profile.html')
+def profile(request):   # Aún sin acabar
+    if request.user.is_authenticated:
+        if not request.POST:
+            q = request.user.id
+            user = User.objects.get(pk=q)
+            userForm = UserForm(instance=user)
+            context = {"form": userForm}
+            return render(request, 'products/profile.html', context)
+    else:
+        return render(request, 'products/login_page.html')
