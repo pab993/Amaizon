@@ -20,7 +20,8 @@
                               {% csrf_token %}
                               <fieldset>
 
-                                  {% include 'products/form_template.html' %}
+                                  {{ form.as_p }}
+                                  {{ form2.as_p }}
 
                               </fieldset>
 

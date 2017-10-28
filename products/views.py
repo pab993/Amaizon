@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import UserForm, ProfileForm
-from .models import Product
+from .forms import UserForm, ProfileForm1, ProfileForm2
+from .models import Product, UserProfile
 from django.contrib.auth.models import User
+from django.forms.models import inlineformset_factory
 
 # Create your views here.
 
@@ -92,9 +93,11 @@ def register(request):
             user = form.save(commit=False)
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            email = form.cleaned_data['email']
+            #email = form.cleaned_data['email']
             user.set_password(password)
             user.save()
+            user_profile = UserProfile(user=user)
+            user_profile.save()
             user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
@@ -157,17 +160,22 @@ def logout_user(request):
 
 def profile(request):
     if request.user.is_authenticated:
+        userprofile = UserProfile.objects.get(user=request.user)
         if request.method == "POST":
-            form = ProfileForm(request.POST, instance=request.user)
+            form = ProfileForm1(request.POST, instance=request.user)
+            form2 = ProfileForm2(request.POST, instance=userprofile)
             if form.is_valid():
                 user = form.save(commit=False)
                 user.save()
+                userprofile = form2.save(commit=False)
+                userprofile.save()
                 return redirect('index')
 
         else:
-            form = ProfileForm(instance=request.user)
-        context = {"form": form}
+            form = ProfileForm1(instance=request.user)
+            form2 = ProfileForm2(instance=userprofile)
+        context = {"form": form,
+                   "form2": form2}
         return render(request, 'products/profile.html', context)
     else:
         return render(request, 'products/login_page.html')
-

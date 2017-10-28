@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from products.models import Product, Assessment
+from products.models import Product, Assessment, UserProfile
 from django.contrib.auth.models import User
 from django.core.files import File
 
@@ -46,6 +46,8 @@ class Command(BaseCommand):
             #u = User(username=amaizon_users[j][0], password=amaizon_users[j][1])
             u = User.objects.create_user(username=amaizon_users[j][0], email=amaizon_users[j][2], password=amaizon_users[j][1])
             u.save()
+            user_profile = UserProfile(user=u)
+            user_profile.save()
 
         p = Product.objects.all()
         u = User.objects.all()

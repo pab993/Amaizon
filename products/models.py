@@ -7,6 +7,11 @@ from django.core.validators import MaxValueValidator,  MinValueValidator
 
 # Create your models here.
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, related_name='user')
+    picture = models.CharField(max_length=50)
+
+
 class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)

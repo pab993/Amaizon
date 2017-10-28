@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms
-from .models import Product, Assessment
+from .models import Product, Assessment, UserProfile
 
 
 class ProductForm(forms.ModelForm):
@@ -40,8 +40,19 @@ class UserForm(forms.ModelForm):
         fields = ['username', 'email', 'password', 'password_confirm']
 
 
-class ProfileForm(forms.ModelForm):
+class ProfileForm1(forms.ModelForm):
+    first_name = forms.CharField(max_length=50, required=False)
+    last_name = forms.CharField(max_length=150, required=False)
+    email = forms.EmailField()
+
     class Meta:
         model = User
-        fields = ['email']
+        fields = ['first_name', 'last_name', 'email']
 
+
+class ProfileForm2(forms.ModelForm):
+    picture = forms.CharField(max_length=50, required=False)
+
+    class Meta:
+        model = UserProfile
+        fields = ['picture']
