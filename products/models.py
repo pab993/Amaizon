@@ -21,6 +21,22 @@ class Product(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
+    @property
+    def avg_rating(self):
+        totalscore = 0
+        total = 0
+        if len(self.assessment_set.all()) != 0:
+            for a in self.assessment_set.all():
+                totalscore = totalscore + a.score
+                total = total + 1
+            return int(totalscore/total)
+        else:
+            return -1
+
+    @property
+    def number_of_assessments(self):
+        return len(self.assessment_set.all())
+
 
 class Assessment(models.Model):
     comment = models.CharField(max_length=250)
@@ -29,5 +45,4 @@ class Assessment(models.Model):
     user = models.ForeignKey(User)
 
     def __str__(self):
-        return self.comment + " - " + self.score
-
+        return self.comment + " - " + str(self.score)

@@ -20,8 +20,7 @@
                               {% csrf_token %}
                               <fieldset>
 
-                                  <label for="email">Email: </label>
-                                  <input id="email" type="text" name="email" value="{{ email }}">
+                                  {% include 'products/form_template.html' %}
 
                               </fieldset>
 

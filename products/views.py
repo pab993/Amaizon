@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import UserForm
+from .forms import UserForm, ProfileForm
 from .models import Product
 from django.contrib.auth.models import User
 
@@ -155,13 +155,19 @@ def logout_user(request):
     return render(request, 'products/login_page.html', context)
 
 
-def profile(request):   # Aún sin acabar
+def profile(request):
     if request.user.is_authenticated:
-        if not request.POST:
-            q = request.user.id
-            user = User.objects.get(pk=q)
-            userForm = UserForm(instance=user)
-            context = {"form": userForm}
-            return render(request, 'products/profile.html', context)
+        if request.method == "POST":
+            form = ProfileForm(request.POST, instance=request.user)
+            if form.is_valid():
+                user = form.save(commit=False)
+                user.save()
+                return redirect('index')
+
+        else:
+            form = ProfileForm(instance=request.user)
+        context = {"form": form}
+        return render(request, 'products/profile.html', context)
     else:
         return render(request, 'products/login_page.html')
+
