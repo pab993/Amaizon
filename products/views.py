@@ -12,6 +12,7 @@ from django.forms.models import inlineformset_factory
 
 def login_page(request):
     if request.user.is_authenticated():
+        userprofile = UserProfile.objects.get(user=request.user)
         products_list = Product.objects.all()
         paginator = Paginator(products_list, 4)
         page = request.GET.get('page')
@@ -23,7 +24,7 @@ def login_page(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             products = paginator.page(paginator.num_pages)
-        context = {"products": products}
+        context = {"products": products, "userprofile": userprofile}
         return render(request, 'products/index.html', context)
     else:
         return render(request, 'products/login_page.html')
@@ -31,6 +32,7 @@ def login_page(request):
 
 def login_user(request):
     if request.user.is_authenticated():
+        userprofile = UserProfile.objects.get(user=request.user)
         products_list = Product.objects.all().order_by('-pub_date')
         paginator = Paginator(products_list, 4)
         page = request.GET.get('page')
@@ -42,7 +44,7 @@ def login_user(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             products = paginator.page(paginator.num_pages)
-        context = {"products": products}
+        context = {"products": products, "userprofile": userprofile}
         return render(request, 'products/index.html', context)
     else:
         if request.method == "POST":
@@ -52,6 +54,7 @@ def login_user(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    userprofile = UserProfile.objects.get(user=user)
                     products_list = Product.objects.all().order_by('-pub_date')
                     paginator = Paginator(products_list, 4)
                     page = request.GET.get('page')
@@ -63,7 +66,7 @@ def login_user(request):
                     except EmptyPage:
                         # If page is out of range (e.g. 9999), deliver last page of results.
                         products = paginator.page(paginator.num_pages)
-                    context = {"products": products}
+                    context = {"products": products, "userprofile": userprofile}
                     return render(request, 'products/index.html', context)
                 else:
                     return render(request, 'products/login_page.html', {'error_message': 'Your account has been disabled'})
@@ -74,6 +77,7 @@ def login_user(request):
 
 def register(request):
     if request.user.is_authenticated():
+        userprofile = UserProfile.objects.get(user=request.user)
         products_list = Product.objects.all().order_by('-pub_date')
         paginator = Paginator(products_list, 4)
         page = request.GET.get('page')
@@ -85,7 +89,7 @@ def register(request):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             products = paginator.page(paginator.num_pages)
-        context = {"products": products}
+        context = {"products": products, "userprofile": userprofile}
         return render(request, 'products/index.html', context)
     else:
         form = UserForm(request.POST or None)
@@ -132,7 +136,8 @@ def index(request):
             except EmptyPage:
                 # If page is out of range (e.g. 9999), deliver last page of results.
                 products = paginator.page(paginator.num_pages)
-            context = {"products": products}
+            userprofile = UserProfile.objects.get(user=request.user)
+            context = {"products": products, "userprofile": userprofile}
             return render(request, 'products/index.html', context)
         else:
             paginator = Paginator(products_list, 4)
@@ -145,7 +150,8 @@ def index(request):
             except EmptyPage:
                 # If page is out of range (e.g. 9999), deliver last page of results.
                 products = paginator.page(paginator.num_pages)
-            context = {"products": products}
+            userprofile = UserProfile.objects.get(user=request.user)
+            context = {"products": products, "userprofile": userprofile}
             return render(request, 'products/index.html', context)
 
 
@@ -163,19 +169,21 @@ def profile(request):
         userprofile = UserProfile.objects.get(user=request.user)
         if request.method == "POST":
             form = ProfileForm1(request.POST, instance=request.user)
-            form2 = ProfileForm2(request.POST, instance=userprofile)
+            form2 = ProfileForm2(request.POST, request.FILES or None, instance=userprofile)
             if form.is_valid():
                 user = form.save(commit=False)
                 user.save()
-                userprofile = form2.save(commit=False)
-                userprofile.save()
-                return redirect('index')
+                if form2.is_valid():
+                    userprofile = form2.save(commit=False)
+                    userprofile.save()
+                    return redirect('index')
 
         else:
             form = ProfileForm1(instance=request.user)
             form2 = ProfileForm2(instance=userprofile)
         context = {"form": form,
-                   "form2": form2}
+                   "form2": form2,
+                   "userprofile": userprofile}
         return render(request, 'products/profile.html', context)
     else:
         return render(request, 'products/login_page.html')

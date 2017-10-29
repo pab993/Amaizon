@@ -9,7 +9,7 @@ from django.core.validators import MaxValueValidator,  MinValueValidator
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='user')
-    picture = models.CharField(max_length=50)
+    picture = models.FileField(blank=True)
 
 
 class Product(models.Model):

@@ -51,7 +51,7 @@ class ProfileForm1(forms.ModelForm):
 
 
 class ProfileForm2(forms.ModelForm):
-    picture = forms.CharField(max_length=50, required=False)
+    picture = forms.FileField(required=False, widget=forms.FileInput)
 
     class Meta:
         model = UserProfile
