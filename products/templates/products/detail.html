@@ -1,0 +1,147 @@
+{% extends 'products/base.html' %}
+{% block title %}{{product.name}}{% endblock %}
+{% block body %}
+
+<div class="container-fluid songs-container">
+
+    <div class="row">
+
+        <!-- Left Product Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{% url 'detail' product.id %}">
+                        {% if product.picture %}
+                            <img src="{{ product.picture.url }}" class="img-responsive">
+                        {% else %}
+                            <h3>No image to display</h3>
+                        {% endif %}
+                    </a>
+                    <h1>{{ product.name }}</h1>
+                    <p>{{ product.description }}</p>
+                    <p style="color:#FF0000;">{{ product.price }} €</p>
+                    <br>
+
+                    <div class="ratings">
+                        {% if product.avg_rating == -1 %}
+                            <p>Nobody rate this yet</p>
+                        {% elif product.avg_rating == 0 %}
+                            <p>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                {{product.number_of_assessments}} review/s
+                            </p>
+                         {% elif product.avg_rating == 1 %}
+                            <p>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                {{product.number_of_assessments}} review/s
+                            </p>
+                        {% elif product.avg_rating == 2 %}
+                            <p>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                {{product.number_of_assessments}} review/s
+                            </p>
+                        {% elif product.avg_rating == 3 %}
+                            <p>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                {{product.number_of_assessments}} review/s
+                            </p>
+                        {% elif product.avg_rating == 4 %}
+                            <p>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                {{product.number_of_assessments}} review/s
+                            </p>
+                        {% elif product.avg_rating == 5 %}
+                            <p>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span class="glyphicon glyphicon-star"></span>
+                                {{product.number_of_assessments}} review/s
+                            </p>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Song Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" class="active"><a href="#">Add a new review</a></li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>All reviews</h3>
+
+                    {% if product.avg_rating == -1 %}
+                        <p><strong>Nobody's posted any review yet</strong></p>
+                    {% else %}
+
+                        {% for assessment in product.assessments %}
+
+
+                            <!--<div class="row">
+                                <div class="col-sm-12">
+                                    <h3>User Comment Example</h3>
+                                </div>
+                            </div>-->
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <div class="thumbnail">
+                                        {% if assessment.user.userprofile.picture %}
+                                            <img class="img-responsive user-photo" src="{{assessment.user.userprofile.picture.url}}">
+                                        {% else %}
+                                            <img class="img-responsive user-photo" src="https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg">
+                                        {% endif %}
+                                    </div><!-- /thumbnail -->
+                                </div><!-- /col-sm-1 -->
+
+                                <div class="col-sm-5">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <strong>{{assessment.user.username}}</strong> <span class="text-muted">commented 5 days ago</span>
+                                        </div>
+                                    <div class="panel-body">
+                                        {{assessment.comment}}
+                                    </div><!-- /panel-body -->
+                                    </div><!-- /panel panel-default -->
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

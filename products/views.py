@@ -1,11 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import UserForm, ProfileForm1, ProfileForm2
 from .models import Product, UserProfile
 from django.contrib.auth.models import User
-from django.forms.models import inlineformset_factory
 
 # Create your views here.
 
@@ -187,3 +186,14 @@ def profile(request):
         return render(request, 'products/profile.html', context)
     else:
         return render(request, 'products/login_page.html')
+
+
+def detail(request, product_id):
+    if not request.user.is_authenticated():
+        return render(request, 'products/login_page.html')
+    else:
+        user = request.user
+        product = get_object_or_404(Product, pk=product_id)
+        userprofile = UserProfile.objects.get(user=user)
+        return render(request, 'products/detail.html', {'product': product, 'user': user, 'userprofile': userprofile})
+    

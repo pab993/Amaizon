@@ -8,7 +8,7 @@ from django.core.validators import MaxValueValidator,  MinValueValidator
 # Create your models here.
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, related_name='user')
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     picture = models.FileField(blank=True)
 
 
@@ -41,6 +41,10 @@ class Product(models.Model):
     @property
     def number_of_assessments(self):
         return len(self.assessment_set.all())
+
+    @property
+    def assessments(self):
+        return self.assessment_set.all()
 
 
 class Assessment(models.Model):

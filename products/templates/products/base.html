@@ -52,10 +52,10 @@
 
 				<div id="navbar" class="navbar-collapse collapse text-right">
 					<ul class="nav navbar-nav navbar-right">
-                        {% if userprofile.picture is None %}
-						    <li><a class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"> <img class="img-circle" src="https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg" height="25" width="25"/> ({{userprofile.user.username}})
+                        {% if userprofile.picture %}
+						    <li><a class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"> <img class="img-circle" src="{{ userprofile.picture.url }}" height="25" width="25"/> ({{userprofile.user.username}})
                         {% else %}
-                            <li><a class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"> <img class="img-circle" src="{{ userprofile.picture.url }}" height="25" width="25"/> ({{userprofile.user.username}})
+                            <li><a class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"> <img class="img-circle" src="https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg" height="25" width="25"/> ({{userprofile.user.username}})
                         {% endif %}
 
                         </a>
