@@ -28,13 +28,22 @@ class Command(BaseCommand):
         amaizon_users = [['user1', 'user1', 'user1@user1.com'], ['user2', 'user2', 'user2@user2.com'], ['user3', 'user3', 'user3@user3.com'], ['user4', 'user4', 'user4@user4.com'], ['user5', 'user5', 'user5@user5.com'], ['user6', 'user6', 'user6@user6.com'], ['user7', 'user7', 'user7@user7.com'], ['user8', 'user8', 'user8@user8.com'], ['user9', 'user9', 'user9@user9.com'], ['user10', 'user10', 'user10@user10.com']]
 
         #El tamaño de esta tupla debe ser menor que las de users y products para que funcione la populación
-        amaizon_assessment = [['I love it', '4'], ["I recommended, it's the perfect game", '5'], ["This is bull****, I don't like it", '0'], ['No era lo que esperaba, pero estoy satidfecho', '3'], ["I love this game, its artistic direction, the music and the gameplay", '4']]
-
-        amaizon_assessment2 = [['This is awesome', '5'], ["It's a good game indeed", '4'],
+        amaizon_assessment = [['I love it', '4'],
+                              ["I recommended, it's the perfect game", '5'],
+                              ["This is bull****, I don't like it", '0'],
+                              ['No era lo que esperaba, pero estoy satisfecho', '3'],
+                              ["I love this game, its artistic direction, the music and the gameplay", '4'],
+                              ['This is awesome', '5'],
+                              ["It's a good game indeed", '4'],
                               ["Meh... I've seen better things", '1'],
                               ['No estoy satisfecho, pero era lo que esperaba', '2'],
-                              ["It's very good, everybody that loves games should try this one", '4'],]
+                              ["It's very good, everybody that loves games should try this one", '4'],
+                              ["This is a very long comment, because I want to make a good review of this game. Well, actually, I've never play this game but my friends told me that it's great so... I guess it's good. Ok, I lied... I don't have any friends...", '5']]
 
+        #amaizon_assessment2 = [['This is awesome', '5'], ["It's a good game indeed", '4'],
+         #                     ["Meh... I've seen better things", '1'],
+          #                    ['No estoy satisfecho, pero era lo que esperaba', '2'],
+           #                   ["It's very good, everybody that loves games should try this one", '4'],]
 
         for i in range(len(amaizon_products)):
             f = open(amaizon_products[i][3], 'rb')
@@ -43,7 +52,6 @@ class Command(BaseCommand):
             p.save()
 
         for j in range(len(amaizon_users)):
-            #u = User(username=amaizon_users[j][0], password=amaizon_users[j][1])
             u = User.objects.create_user(username=amaizon_users[j][0], email=amaizon_users[j][2], password=amaizon_users[j][1])
             u.save()
             user_profile = UserProfile(user=u)
@@ -52,14 +60,32 @@ class Command(BaseCommand):
         p = Product.objects.all()
         u = User.objects.all()
 
-        for e in range(len(amaizon_assessment)):
-            a = Assessment(comment=amaizon_assessment[e][0], score=amaizon_assessment[e][1], product=p[e], user=u[e])
-            a.save()
+        a0 = Assessment(comment=amaizon_assessment[0][0], score=amaizon_assessment[0][1], product=p[0], user=u[0])
+        a0.save()
+        a1 = Assessment(comment=amaizon_assessment[1][0], score=amaizon_assessment[1][1], product=p[1], user=u[0])
+        a1.save()
+        a2 = Assessment(comment=amaizon_assessment[2][0], score=amaizon_assessment[2][1], product=p[0], user=u[1])
+        a2.save()
+        a3 = Assessment(comment=amaizon_assessment[3][0], score=amaizon_assessment[3][1], product=p[3], user=u[2])
+        a3.save()
+        a4 = Assessment(comment=amaizon_assessment[4][0], score=amaizon_assessment[4][1], product=p[1], user=u[3])
+        a4.save()
+        a5 = Assessment(comment=amaizon_assessment[5][0], score=amaizon_assessment[5][1], product=p[3], user=u[3])
+        a5.save()
+        a6 = Assessment(comment=amaizon_assessment[6][0], score=amaizon_assessment[6][1], product=p[4], user=u[4])
+        a6.save()
+        a7 = Assessment(comment=amaizon_assessment[7][0], score=amaizon_assessment[7][1], product=p[6], user=u[6])
+        a7.save()
+        a8 = Assessment(comment=amaizon_assessment[8][0], score=amaizon_assessment[8][1], product=p[7], user=u[1])
+        a8.save()
+        a9 = Assessment(comment=amaizon_assessment[9][0], score=amaizon_assessment[9][1], product=p[1], user=u[1])
+        a9.save()
+        a10 = Assessment(comment=amaizon_assessment[10][0], score=amaizon_assessment[10][1], product=p[5], user=u[9])
+        a10.save()
 
-        for x in range(len(amaizon_assessment2)):
-            a = Assessment(comment=amaizon_assessment[x][0], score=amaizon_assessment[x][1], product=p[x+1], user=u[x+1])
-            a.save()
-
+        #for e in range(len(amaizon_assessment)):
+         #   a = Assessment(comment=amaizon_assessment[e][0], score=amaizon_assessment[e][1], product=p[e], user=u[e])
+          #  a.save()
 
     def handle(self, *args, **options):
         self._create_products()

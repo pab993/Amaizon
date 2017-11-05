@@ -195,5 +195,15 @@ def detail(request, product_id):
         user = request.user
         product = get_object_or_404(Product, pk=product_id)
         userprofile = UserProfile.objects.get(user=user)
-        return render(request, 'products/detail.html', {'product': product, 'user': user, 'userprofile': userprofile})
-    
+        assessments_list = product.assessments
+        paginator = Paginator(assessments_list, 10)
+        page = request.GET.get('page')
+        try:
+            assessments = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            assessments = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            assessments = paginator.page(paginator.num_pages)
+        return render(request, 'products/detail.html', {'product': product, 'user': user, 'userprofile': userprofile, 'assessments': assessments})

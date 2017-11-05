@@ -90,10 +90,6 @@
         <!-- Right Song Info -->
         <div class="col-sm-8 col-md-9">
 
-            <ul class="nav nav-pills" style="margin-bottom: 10px;">
-                <li role="presentation" class="active"><a href="#">Add a new review</a></li>
-            </ul>
-
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h3>All reviews</h3>
@@ -102,14 +98,8 @@
                         <p><strong>Nobody's posted any review yet</strong></p>
                     {% else %}
 
-                        {% for assessment in product.assessments %}
+                        {% for assessment in assessments %}
 
-
-                            <!--<div class="row">
-                                <div class="col-sm-12">
-                                    <h3>User Comment Example</h3>
-                                </div>
-                            </div>-->
                             <div class="row">
                                 <div class="col-sm-1">
                                     <div class="thumbnail">
@@ -121,7 +111,7 @@
                                     </div><!-- /thumbnail -->
                                 </div><!-- /col-sm-1 -->
 
-                                <div class="col-sm-5">
+                                <div class="col-sm-9">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <strong>{{assessment.user.username}}</strong> <span class="text-muted">commented 5 days ago</span>
@@ -136,8 +126,40 @@
                         {% endfor %}
 
                     {% endif %}
+
+
+                    <div class="center">
+                        {% if assessments.has_other_pages %}
+                          <ul class="pagination">
+                            {% if assessments.has_previous %}
+                              <li><a href="?page={{ assessments.previous_page_number }}">&laquo;</a></li>
+                            {% else %}
+                              <li class="disabled"><span>&laquo;</span></li>
+                            {% endif %}
+                            {% for i in assessments.paginator.page_range %}
+                              {% if assessments.number == i %}
+                                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                              {% else %}
+                                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                              {% endif %}
+                            {% endfor %}
+                            {% if assessments.has_next %}
+                              <li><a href="?page={{ assessments.next_page_number }}">&raquo;</a></li>
+                            {% else %}
+                              <li class="disabled"><span>&raquo;</span></li>
+                            {% endif %}
+                          </ul>
+                        {% endif %}
+                    </div>
+
+
                 </div>
             </div>
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" class="active"><a href="#">Add a new review</a></li>
+            </ul>
+
         </div>
 
     </div>
