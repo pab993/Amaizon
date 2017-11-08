@@ -2,9 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import UserForm, ProfileForm1, ProfileForm2
-from .models import Product, UserProfile
-from django.contrib.auth.models import User
+from .forms import UserForm, ProfileForm1, ProfileForm2, AssessmentForm
+from .models import Product, UserProfile, Assessment
 
 # Create your views here.
 
@@ -195,8 +194,16 @@ def detail(request, product_id):
         user = request.user
         product = get_object_or_404(Product, pk=product_id)
         userprofile = UserProfile.objects.get(user=user)
-        assessments_list = product.assessments
+        assessments_list = Assessment.objects.filter(product=product_id).order_by('-post_date')
+        exist_assessment = Assessment.objects.filter(product=product_id, user=user)
         paginator = Paginator(assessments_list, 10)
+        form = AssessmentForm(request.POST or None)
+        if request.method == 'POST':
+            if form.is_valid():
+                assessment = form.save(commit=False)
+                assessment.product = product
+                assessment.user = user
+                assessment.save()
         page = request.GET.get('page')
         try:
             assessments = paginator.page(page)
@@ -206,4 +213,6 @@ def detail(request, product_id):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             assessments = paginator.page(paginator.num_pages)
-        return render(request, 'products/detail.html', {'product': product, 'user': user, 'userprofile': userprofile, 'assessments': assessments})
+        return render(request, 'products/detail.html', {'product': product, 'user': user, 'userprofile': userprofile,
+                                                        'assessments': assessments, 'form': form,
+                                                        'exist_assessment': exist_assessment})

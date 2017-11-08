@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-import datetime
+from datetime import datetime
 from django.core.validators import MaxValueValidator,  MinValueValidator
 
 
@@ -51,6 +51,7 @@ class Assessment(models.Model):
     comment = models.CharField(max_length=250)
     score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    post_date = models.DateTimeField(default=datetime.now())
     user = models.ForeignKey(User)
 
     def __str__(self):

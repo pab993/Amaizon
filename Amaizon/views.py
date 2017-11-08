@@ -6,4 +6,4 @@ from django.http import HttpResponse
 
 def index(request):
     #return render(request, "login_page.html")
-    return HttpResponse("<h1>Sos puto baca susia</h1>")
+    return HttpResponse("<h1>Test</h1>")

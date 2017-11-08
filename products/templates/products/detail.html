@@ -114,7 +114,7 @@
                                 <div class="col-sm-9">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <strong>{{assessment.user.username}}</strong> <span class="text-muted">commented 5 days ago</span>
+                                            <strong>{{assessment.user.username}}</strong> <span class="text-muted">- Posted {{assessment.post_date}}</span>
                                         </div>
                                     <div class="panel-body">
                                         {{assessment.comment}}
@@ -156,14 +156,155 @@
                 </div>
             </div>
 
-            <ul class="nav nav-pills" style="margin-bottom: 10px;">
-                <li role="presentation" class="active"><a href="#">Add a new review</a></li>
-            </ul>
+            {% if not exist_assessment %}
+                <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                    <li role="presentation" class="active" data-toggle="modal" data-target="#review_form"><a href="#">Add a new review</a></li>
+                </ul>
+            {% else %}
+
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <div class="thumbnail">
+                                        {% if exist_assessment.user.userprofile.picture %}
+                                            <img class="img-responsive user-photo" src="{{exist_assessment.user.userprofile.picture.url}}">
+                                        {% else %}
+                                            <img class="img-responsive user-photo" src="https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg">
+                                        {% endif %}
+                                    </div><!-- /thumbnail -->
+                                </div><!-- /col-sm-1 -->
+
+                                <div class="col-sm-9">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <strong>{{exist_assessment.user.username}}</strong> <span class="text-muted">- Posted {{exist_assessment.post_date}}</span>
+                                        </div>
+                                    <div class="panel-body">
+                                        {{exist_assessment.comment}}
+                                    </div><!-- /panel-body -->
+                                    </div><!-- /panel panel-default -->
+                                </div>
+                            </div>
+
+
+            {% endif %}
 
         </div>
 
     </div>
 
 </div>
+
+<!-- Hidden review form -->
+
+<div class="modal fade product_view" id="review_form">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Post a new review of {{product.name}}</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 product_img">
+                        <img src="{{product.picture.url}}" class="img-responsive">
+
+                        <h1>{{ product.name }}</h1>
+                        <p>{{ product.description }}</p>
+
+                        <p style="color:#FF0000;">{{ product.price }} €</p>
+                        <br>
+
+                        <div class="ratings">
+                            {% if product.avg_rating == -1 %}
+                                <p>Nobody rate this yet</p>
+                            {% elif product.avg_rating == 0 %}
+                                <p>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    {{product.number_of_assessments}} review/s
+                                </p>
+                             {% elif product.avg_rating == 1 %}
+                                <p>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    {{product.number_of_assessments}} review/s
+                                </p>
+                            {% elif product.avg_rating == 2 %}
+                                <p>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    {{product.number_of_assessments}} review/s
+                                </p>
+                            {% elif product.avg_rating == 3 %}
+                                <p>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    {{product.number_of_assessments}} review/s
+                                </p>
+                            {% elif product.avg_rating == 4 %}
+                                <p>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    {{product.number_of_assessments}} review/s
+                                </p>
+                            {% elif product.avg_rating == 5 %}
+                                <p>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    {{product.number_of_assessments}} review/s
+                                </p>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 product_content">
+                        <h4>Product Id: <span>{{product.id}}</span></h4>
+
+                        <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <fieldset>
+
+                                  {% include 'products/form_template.html' %}
+
+                              </fieldset>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-success">Post review</button>
+                                </div>
+                            </div>
+
+                        </form>
+
+                        <!--<div class="space-ten"></div>
+                        <div class="btn-ground">
+                            <button type="button" class="btn btn-primary">Post review</button>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
