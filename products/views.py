@@ -104,8 +104,19 @@ def register(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    products = Product.objects.all().order_by('-pub_date')
-                    context = {'products': products}
+                    products_list = Product.objects.all().order_by('-pub_date')
+                    userprofile = UserProfile.objects.get(user=request.user)
+                    paginator = Paginator(products_list, 4)
+                    page = request.GET.get('page')
+                    try:
+                        products = paginator.page(page)
+                    except PageNotAnInteger:
+                        # If page is not an integer, deliver first page.
+                        products = paginator.page(1)
+                    except EmptyPage:
+                        # If page is out of range (e.g. 9999), deliver last page of results.
+                        products = paginator.page(paginator.num_pages)
+                    context = {'products': products, 'userprofile': userprofile}
                     return render(request, 'products/index.html', context)
         context = {
             "form": form,
