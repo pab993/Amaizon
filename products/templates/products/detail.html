@@ -162,28 +162,9 @@
                 </ul>
             {% else %}
 
-                            <div class="row">
-                                <div class="col-sm-1">
-                                    <div class="thumbnail">
-                                        {% if exist_assessment.user.userprofile.picture %}
-                                            <img class="img-responsive user-photo" src="{{exist_assessment.user.userprofile.picture.url}}">
-                                        {% else %}
-                                            <img class="img-responsive user-photo" src="https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg">
-                                        {% endif %}
-                                    </div><!-- /thumbnail -->
-                                </div><!-- /col-sm-1 -->
-
-                                <div class="col-sm-9">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <strong>{{exist_assessment.user.username}}</strong> <span class="text-muted">- Posted {{exist_assessment.post_date}}</span>
-                                        </div>
-                                    <div class="panel-body">
-                                        {{exist_assessment.comment}}
-                                    </div><!-- /panel-body -->
-                                    </div><!-- /panel panel-default -->
-                                </div>
-                            </div>
+                <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                    <li role="presentation" class="active" data-toggle="modal" data-target="#review_form_edit"><a href="#">Edit my review</a></li>
+                </ul>
 
 
             {% endif %}
@@ -295,10 +276,6 @@
 
                         </form>
 
-                        <!--<div class="space-ten"></div>
-                        <div class="btn-ground">
-                            <button type="button" class="btn btn-primary">Post review</button>
-                        </div>-->
                     </div>
                 </div>
             </div>
