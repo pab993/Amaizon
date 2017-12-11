@@ -212,9 +212,9 @@ def detail(request, product_id):
         product = get_object_or_404(Product, pk=product_id)
         userprofile = UserProfile.objects.get(user=user)
         assessments_list = Assessment.objects.filter(product=product_id).order_by('-post_date')
-        exist_assessment = Assessment.objects.filter(product=product_id, user=user)
+        exist_assessment = Assessment.objects.filter(product=product_id, user=user).first()
         paginator = Paginator(assessments_list, 10)
-        form = AssessmentForm(request.POST or None)
+        form = AssessmentForm(request.POST or None, instance=exist_assessment)
         if request.method == 'POST':
             if form.is_valid():
                 assessment = form.save(commit=False)

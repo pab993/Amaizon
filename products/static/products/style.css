@@ -77,9 +77,32 @@ input, label {
     float:left;
 }
 
-.carousel-inner.onebyone-carosel { margin: auto; width: 90%; }
+/* CSS para los productos recomendados */
+ul.horizontal-slide {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+ul.horizontal-slide li[class*="col"] {
+    display: inline-block;
+    float: none;
+}
+
+ul.horizontal-slide li[class*="col"]:first-child {
+    margin-left: 0;
+}
+
+.img-rounded {
+    border-radius: 20%;
+}
+
+
+/*.carousel-inner.onebyone-carosel { margin: auto; width: 90%; }
 .onebyone-carosel .active.left { left: -33.33%; }
 .onebyone-carosel .active.right { left: 33.33%; }
 .onebyone-carosel .next { left: 33.33%; }
-.onebyone-carosel .prev { left: -33.33%; }
+.onebyone-carosel .prev { left: -33.33%; }*/
 

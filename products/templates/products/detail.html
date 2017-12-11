@@ -283,5 +283,113 @@
     </div>
 </div>
 
+<!-- Hidden edit review form -->
+
+<div class="modal fade product_view" id="review_form_edit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title">Edit your review of {{product.name}}</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 product_img">
+                        <img src="{{product.picture.url}}" class="img-responsive">
+
+                        <h1>{{ product.name }}</h1>
+                        <p>{{ product.description }}</p>
+
+                        <p style="color:#FF0000;">{{ product.price }} €</p>
+                        <br>
+
+                        <div class="ratings">
+                            {% if product.avg_rating == -1 %}
+                                <p>Nobody rate this yet</p>
+                            {% elif product.avg_rating == 0 %}
+                                <p>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    {{product.number_of_assessments}} review/s
+                                </p>
+                             {% elif product.avg_rating == 1 %}
+                                <p>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    {{product.number_of_assessments}} review/s
+                                </p>
+                            {% elif product.avg_rating == 2 %}
+                                <p>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    {{product.number_of_assessments}} review/s
+                                </p>
+                            {% elif product.avg_rating == 3 %}
+                                <p>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    {{product.number_of_assessments}} review/s
+                                </p>
+                            {% elif product.avg_rating == 4 %}
+                                <p>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    {{product.number_of_assessments}} review/s
+                                </p>
+                            {% elif product.avg_rating == 5 %}
+                                <p>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    {{product.number_of_assessments}} review/s
+                                </p>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 product_content">
+                        <h4>Product Id: <span>{{product.id}}</span></h4>
+
+                        <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <fieldset>
+
+                                  {% include 'products/form_template.html' %}
+
+                              </fieldset>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-success">Post review</button>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

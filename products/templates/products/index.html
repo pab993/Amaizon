@@ -123,7 +123,36 @@
         <h1>There are not products available</h1>
     {% endif %}
 
-<<div class="container">
+<div class="container">
+        <div class="row">
+            <h3>Recommended products:</h3>
+            <br>
+            <div class="col-md-12">
+              <ul class="horizontal-slide">
+                  {% if productsRandom %}
+
+                        {% for productRandom in productsRandom %}
+
+                            <li class="col-md-4"><a href="{% url 'detail' productRandom.id %}">
+
+                                <img src="{{ productRandom.picture.url }}" width="250" height="250" class="img-rounded" title="{{ productRandom.name }}">
+
+                            </a></li>
+
+                        {% endfor %}
+
+                  {% else %}
+
+                        <h3>There are not recommended products available</h3>
+
+                  {% endif %}
+              </ul>
+          </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="container">
         <div class="row">
             <h3>Recommended products:</h3>
             <div class="span12">
@@ -168,6 +197,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 {% endblock %}
