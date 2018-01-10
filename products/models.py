@@ -49,7 +49,7 @@ class Product(models.Model):
 
 class Assessment(models.Model):
     comment = models.CharField(max_length=250)
-    score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    score = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     post_date = models.DateTimeField(default=datetime.now())
     user = models.ForeignKey(User)

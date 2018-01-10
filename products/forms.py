@@ -58,13 +58,14 @@ class ProfileForm2(forms.ModelForm):
         fields = ['picture']
 
 
-CHOICES = (('5', '5'), ('4', '4'), ('3', '3'), ('2', '2'), ('1', '1'), ('0', '0'))
+CHOICES = (('5', '5'), ('4', '4'), ('3', '3'), ('2', '2'), ('1', '1'))
 
 
 class AssessmentForm(forms.ModelForm):
     comment = forms.CharField(widget=forms.Textarea)
     score = forms.ChoiceField(choices=CHOICES, required=True)
+    product = forms.ModelChoiceField(queryset=Product.objects.all())
 
     class Meta:
         model = Assessment
-        fields = ['comment', 'score']
+        fields = ['comment', 'score', 'product']

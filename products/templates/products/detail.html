@@ -117,6 +117,38 @@
                                             <strong>{{assessment.user.username}}</strong> <span class="text-muted">- Posted {{assessment.post_date}}</span>
                                         </div>
                                     <div class="panel-body">
+                                        {% if assessment.score == 1 %}
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                        {% elif assessment.score == 2 %}
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                        {% elif assessment.score == 3 %}
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                        {% elif assessment.score == 4 %}
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                        {% elif assessment.score == 5 %}
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            <span class="glyphicon glyphicon-star"></span>
+                                        {% endif %}
+                                        <br>
                                         {{assessment.comment}}
                                     </div><!-- /panel-body -->
                                     </div><!-- /panel panel-default -->

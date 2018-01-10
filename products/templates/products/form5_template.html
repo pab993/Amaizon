@@ -1,6 +1,6 @@
 {% load products_extra %}
-{% for field in form2 %}
-
+{% for field in form5 %}
+    {% if field.name != 'product' %}
         <div class="form-group">
             <label class="control-label col-sm-2">{{ field | append_ast_if_req}}</label>
                 <div class="col-sm-10">{{ field }}</div>
@@ -8,5 +8,6 @@
                 <span class="text-danger small">{{ field.errors }}</span>
             </div>
         </div>
-
+    {% else %}
+    {% endif %}
 {% endfor %}

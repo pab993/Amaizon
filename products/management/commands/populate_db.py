@@ -30,7 +30,7 @@ class Command(BaseCommand):
         #El tamaño de esta tupla debe ser menor que las de users y products para que funcione la populación
         amaizon_assessment = [['I love it', '4', '2017-10-05 10:00:00'],
                               ["I recommended, it's the perfect game", '5', '2017-10-25 15:10:00'],
-                              ["This is bull****, I don't like it", '0', '2017-11-01 12:30:00'],
+                              ["This is bull****, I don't like it", '1', '2017-11-01 12:30:00'],
                               ['No era lo que esperaba, pero estoy satisfecho', '3', '2017-11-01 12:30:00'],
                               ["I love this game, its artistic direction, the music and the gameplay", '4', '2017-09-23 12:33:00'],
                               ['This is awesome', '5', '2017-11-07 06:18:00'],

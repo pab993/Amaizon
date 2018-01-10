@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import UserForm, ProfileForm1, ProfileForm2, AssessmentForm
 from .models import Product, UserProfile, Assessment
+import random
 
 # Create your views here.
 
@@ -94,16 +95,39 @@ def register(request):
         context = {"products": products, "userprofile": userprofile, "productsRandom": productsRandom}
         return render(request, 'products/index.html', context)
     else:
+        context = {}
+        if request.method == "POST":
+            form2 = AssessmentForm(request.POST, prefix='Review1')
+            form3 = AssessmentForm(request.POST, prefix='Review2')
+            product0 = Product.objects.get(pk=request.POST.get('Review1-product'))
+            product1 = Product.objects.get(pk=request.POST.get('Review2-product'))
+            context.update({'products_form_0': product0, 'products_form_1': product1})
+        else:
+            my_ids = Product.objects.values_list('id', flat=True)
+            n = 2
+            rand_ids = random.sample(list(my_ids), n)
+            products_form = Product.objects.filter(id__in=rand_ids)
+            form2 = AssessmentForm(initial={'product': products_form[0]}, prefix='Review1')
+            form3 = AssessmentForm(initial={'product': products_form[1]}, prefix='Review2')
+            context.update({'products_form_0': products_form[0], 'products_form_1': products_form[1]})
         form = UserForm(request.POST or None)
-        if form.is_valid():
+        if form.is_valid() and form2.is_valid() and form3.is_valid():
             user = form.save(commit=False)
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            #email = form.cleaned_data['email']
             user.set_password(password)
             user.save()
             user_profile = UserProfile(user=user)
             user_profile.save()
+            assessment0 = form2.save(commit=False)
+            assessment1 = form3.save(commit=False)
+            product0 = form2.cleaned_data['product']
+            product1 = form3.cleaned_data['product']
+            context.update({'products_form_0': product0, 'product_form_1': product1})
+            assessment0.user = user
+            assessment0.save()
+            assessment1.user = user
+            assessment1.save()
             user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
@@ -123,9 +147,7 @@ def register(request):
                         products = paginator.page(paginator.num_pages)
                     context = {'products': products, 'userprofile': userprofile, "productsRandom": productsRandom}
                     return render(request, 'products/index.html', context)
-        context = {
-            "form": form,
-        }
+        context.update({"form": form, "form2": form2, "form3": form3})
         return render(request, 'products/register.html', context)
 
 

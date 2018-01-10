@@ -24,6 +24,16 @@
                               <fieldset>
 
                                   {% include 'products/form_template.html' %}
+                                  <br>
+                                  <img src="{{ products_form_0.picture.url }}" width="150" height="150" class="img-rounded" title="{{ products_form_0.name }}">
+                                  <br>
+                                  {% include 'products/form2_template.html' %}
+                                  <br>
+                                  <img src="{{ products_form_1.picture.url }}" width="150" height="150" class="img-rounded" title="{{ products_form_1.name }}">
+                                  <br>
+                                  {% include 'products/form3_template.html' %}
+
+
 
                               </fieldset>
 
