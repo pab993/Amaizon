@@ -66,6 +66,12 @@ class AssessmentForm(forms.ModelForm):
     score = forms.ChoiceField(choices=CHOICES, required=True)
     product = forms.ModelChoiceField(queryset=Product.objects.all(), widget=forms.HiddenInput(), required=False)
 
+    def clean(self):
+        cd = self.cleaned_data
+        if cd.get('comment') is None:
+            self.add_error('comment', "Cannot be empty")
+        return cd
+
     class Meta:
         model = Assessment
         fields = ['comment', 'score', 'product']

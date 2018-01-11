@@ -107,7 +107,9 @@ def register(request):
             product2 = Product.objects.get(pk=request.POST.get('Review3-product'))
             product3 = Product.objects.get(pk=request.POST.get('Review4-product'))
             product4 = Product.objects.get(pk=request.POST.get('Review5-product'))
-            context.update({'products_form_0': product0, 'products_form_1': product1, 'products_form_2': product2, 'products_form_3': product3, 'products_form_4': product4})
+            context.update({'products_form_0': product0, 'products_form_1': product1, 'products_form_2': product2,
+                            'products_form_3': product3, 'products_form_4': product4,
+                            'error_message': 'The registration could not be completed. Please check that all fields have been filled in correctly.'})
         else:
             my_ids = Product.objects.values_list('id', flat=True)
             n = 5
