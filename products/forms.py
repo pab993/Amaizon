@@ -64,7 +64,7 @@ CHOICES = (('5', '5'), ('4', '4'), ('3', '3'), ('2', '2'), ('1', '1'))
 class AssessmentForm(forms.ModelForm):
     comment = forms.CharField(widget=forms.Textarea)
     score = forms.ChoiceField(choices=CHOICES, required=True)
-    product = forms.ModelChoiceField(queryset=Product.objects.all())
+    product = forms.ModelChoiceField(queryset=Product.objects.all(), widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = Assessment

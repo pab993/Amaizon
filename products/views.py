@@ -99,19 +99,28 @@ def register(request):
         if request.method == "POST":
             form2 = AssessmentForm(request.POST, prefix='Review1')
             form3 = AssessmentForm(request.POST, prefix='Review2')
+            form4 = AssessmentForm(request.POST, prefix='Review3')
+            form5 = AssessmentForm(request.POST, prefix='Review4')
+            form6 = AssessmentForm(request.POST, prefix='Review5')
             product0 = Product.objects.get(pk=request.POST.get('Review1-product'))
             product1 = Product.objects.get(pk=request.POST.get('Review2-product'))
-            context.update({'products_form_0': product0, 'products_form_1': product1})
+            product2 = Product.objects.get(pk=request.POST.get('Review3-product'))
+            product3 = Product.objects.get(pk=request.POST.get('Review4-product'))
+            product4 = Product.objects.get(pk=request.POST.get('Review5-product'))
+            context.update({'products_form_0': product0, 'products_form_1': product1, 'products_form_2': product2, 'products_form_3': product3, 'products_form_4': product4})
         else:
             my_ids = Product.objects.values_list('id', flat=True)
-            n = 2
+            n = 5
             rand_ids = random.sample(list(my_ids), n)
             products_form = Product.objects.filter(id__in=rand_ids)
             form2 = AssessmentForm(initial={'product': products_form[0]}, prefix='Review1')
             form3 = AssessmentForm(initial={'product': products_form[1]}, prefix='Review2')
-            context.update({'products_form_0': products_form[0], 'products_form_1': products_form[1]})
+            form4 = AssessmentForm(initial={'product': products_form[2]}, prefix='Review3')
+            form5 = AssessmentForm(initial={'product': products_form[3]}, prefix='Review4')
+            form6 = AssessmentForm(initial={'product': products_form[4]}, prefix='Review5')
+            context.update({'products_form_0': products_form[0], 'products_form_1': products_form[1], 'products_form_2': products_form[2], 'products_form_3': products_form[3], 'products_form_4': products_form[4]})
         form = UserForm(request.POST or None)
-        if form.is_valid() and form2.is_valid() and form3.is_valid():
+        if form.is_valid() and form2.is_valid() and form3.is_valid() and form4.is_valid() and form5.is_valid() and form6.is_valid():
             user = form.save(commit=False)
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
@@ -121,13 +130,25 @@ def register(request):
             user_profile.save()
             assessment0 = form2.save(commit=False)
             assessment1 = form3.save(commit=False)
+            assessment2 = form4.save(commit=False)
+            assessment3 = form5.save(commit=False)
+            assessment4 = form6.save(commit=False)
             product0 = form2.cleaned_data['product']
             product1 = form3.cleaned_data['product']
-            context.update({'products_form_0': product0, 'product_form_1': product1})
+            product2 = form4.cleaned_data['product']
+            product3 = form5.cleaned_data['product']
+            product4 = form6.cleaned_data['product']
+            context.update({'products_form_0': product0, 'product_form_1': product1, 'products_form_2': product2, 'products_form_3': product3, 'products_form_4': product4})
             assessment0.user = user
             assessment0.save()
             assessment1.user = user
             assessment1.save()
+            assessment2.user = user
+            assessment2.save()
+            assessment3.user = user
+            assessment3.save()
+            assessment4.user = user
+            assessment4.save()
             user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
@@ -147,7 +168,7 @@ def register(request):
                         products = paginator.page(paginator.num_pages)
                     context = {'products': products, 'userprofile': userprofile, "productsRandom": productsRandom}
                     return render(request, 'products/index.html', context)
-        context.update({"form": form, "form2": form2, "form3": form3})
+        context.update({"form": form, "form2": form2, "form3": form3, 'form4': form4, 'form5': form5, 'form6': form6})
         return render(request, 'products/register.html', context)
 
 
