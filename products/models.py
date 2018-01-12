@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.core.validators import MaxValueValidator,  MinValueValidator
 
 
@@ -22,9 +22,13 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    @property
     def was_published_recently(self):
         now = timezone.now()
-        return now - datetime.timedelta(days=1) <= self.pub_date <= now
+        if now - timedelta(days=15) <= self.pub_date <= now:
+            return True
+        else:
+            return False
 
     @property
     def avg_rating(self):

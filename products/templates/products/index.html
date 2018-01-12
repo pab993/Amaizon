@@ -1,5 +1,6 @@
 {% extends 'products/base.html' %}
 {% block title %}Index{% endblock %}
+{% load staticfiles %}
 {% block body %}
     {% if products %}
 <div class="container">
@@ -22,7 +23,10 @@
                 </div>
                 <div class="ratings">
                     {% if product.avg_rating == -1 %}
-                        <p>Nobody rate this yet</p>
+                        {% if product.was_published_recently %}
+                            <img src="{% static 'products/images/new.png' %}" width="100" height="100" class="img-responsive"/>
+                        {% endif %}
+                        <p style="color:#FF0000"><strong><i>Nobody rate this yet. Be the first!</i></strong></p>
                     {% elif product.avg_rating == 0 %}
                         <p>
                             <span class="glyphicon glyphicon-star-empty"></span>

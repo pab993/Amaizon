@@ -10,10 +10,6 @@
         <div class="col-md-4 col-md-offset-4">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="panel-header">
-                        <h3>Register a new account</h3>
-                        <br>
-                    </div>
 
                           {% if error_message %}
                             <p style="color:red;"><strong>{{ error_message }}</strong></p>
@@ -23,36 +19,65 @@
                               {% csrf_token %}
                               <fieldset>
                                   <div class="tab">
+                                      <div class="panel-header">
+                                        <h3>Register a new account</h3>
+                                        <br>
+                                      </div>
                                     {% include 'products/form_template.html' %}
                                   </div>
                                   <div class="tab">
+                                      <div class="panel-header">
+                                        <h4>Before proceeding to the registration, we would like to know your opinion about these games to know your likes better.</h4>
+                                      </div>
                                       <br>
-                                      <img src="{{ products_form_0.picture.url }}" width="150" height="150" class="img-rounded" title="{{ products_form_0.name }}">
-                                      <br>
+                                      <div class="centerImage">
+                                          <img src="{{ products_form_0.picture.url }}" width="300" height="300" class="img-rounded" title="{{ products_form_0.name }}">
+                                          <br>
+                                      </div>
                                       {% include 'products/form2_template.html' %}
                                   </div>
                                   <div class="tab">
+                                      <div class="panel-header">
+                                        <h4>Before proceeding to the registration, we would like to know your opinion about these games to know your likes better.</h4>
+                                      </div>
                                       <br>
-                                      <img src="{{ products_form_1.picture.url }}" width="150" height="150" class="img-rounded" title="{{ products_form_1.name }}">
-                                      <br>
+                                      <div class="centerImage">
+                                        <img src="{{ products_form_1.picture.url }}" width="300" height="300" class="img-rounded" title="{{ products_form_1.name }}">
+                                        <br>
+                                      </div>
                                       {% include 'products/form3_template.html' %}
                                   </div>
                                   <div class="tab">
+                                      <div class="panel-header">
+                                        <h4>Before proceeding to the registration, we would like to know your opinion about these games to know your likes better.</h4>
+                                      </div>
                                       <br>
-                                      <img src="{{ products_form_2.picture.url }}" width="150" height="150" class="img-rounded" title="{{ products_form_2.name }}">
-                                      <br>
+                                      <div class="centerImage">
+                                          <img src="{{ products_form_2.picture.url }}" width="300" height="300" class="img-rounded" title="{{ products_form_2.name }}">
+                                          <br>
+                                      </div>
                                       {% include 'products/form4_template.html' %}
                                   </div>
                                   <div class="tab">
+                                      <div class="panel-header">
+                                        <h4>Before proceeding to the registration, we would like to know your opinion about these games to know your likes better.</h4>
+                                      </div>
                                       <br>
-                                      <img src="{{ products_form_3.picture.url }}" width="150" height="150" class="img-rounded" title="{{ products_form_3.name }}">
-                                      <br>
+                                      <div class="centerImage">
+                                          <img src="{{ products_form_3.picture.url }}" width="300" height="300" class="img-rounded" title="{{ products_form_3.name }}">
+                                          <br>
+                                      </div>
                                       {% include 'products/form5_template.html' %}
                                   </div>
                                   <div class="tab">
+                                      <div class="panel-header">
+                                        <h4>Before proceeding to the registration, we would like to know your opinion about these games to know your likes better.</h4>
+                                      </div>
                                       <br>
-                                      <img src="{{ products_form_4.picture.url }}" width="150" height="150" class="img-rounded" title="{{ products_form_4.name }}">
-                                      <br>
+                                      <div class="centerImage">
+                                          <img src="{{ products_form_4.picture.url }}" width="300" height="300" class="img-rounded" title="{{ products_form_4.name }}">
+                                          <br>
+                                      </div>
                                       {% include 'products/form6_template.html' %}
                                   </div>
 

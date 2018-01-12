@@ -1,5 +1,6 @@
 {% extends 'products/base.html' %}
 {% block title %}{{product.name}}{% endblock %}
+{% load staticfiles %}
 {% block body %}
 
 <div class="container-fluid songs-container">
@@ -24,7 +25,10 @@
 
                     <div class="ratings">
                         {% if product.avg_rating == -1 %}
-                            <p>Nobody rate this yet</p>
+                            {% if product.was_published_recently %}
+                                <img src="{% static 'products/images/new.png' %}" width="100" height="100"/>
+                            {% endif %}
+                            <p style="color:#FF0000"><strong><i>Nobody rate this yet. Be the first!</i></strong></p>
                         {% elif product.avg_rating == 0 %}
                             <p>
                                 <span class="glyphicon glyphicon-star-empty"></span>
@@ -95,7 +99,7 @@
                     <h3>All reviews</h3>
 
                     {% if product.avg_rating == -1 %}
-                        <p><strong>Nobody's posted any review yet</strong></p>
+                        <p style="color:#FF0000"><strong><i>Nobody rate this yet. Be the first!</i></strong></p>
                     {% else %}
 
                         {% for assessment in assessments %}

@@ -141,3 +141,9 @@ button:hover {
 .step.finish {
   background-color: #4CAF50;
 }
+
+.centerImage {
+    margin: auto;
+    padding: 10px;
+    width: 70%;
+}

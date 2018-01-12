@@ -26,6 +26,7 @@ class Command(BaseCommand):
             ['BloodBorne', "Bloodborne is an action role-playing video game developed by FromSoftware and published by Sony Computer Entertainment for PlayStation 4. Officially announced at Sony's Electronic Entertainment Expo 2014 conference, the game was released worldwide in March 2015.", 39.99, 'C:\\Users\\pab99\\Documents\\TFG\\Amaizon\\media\\bloodborne.png', '2015-07-05 00:00:00']]
 
         amaizon_users = [['user1', 'user1', 'user1@user1.com'], ['user2', 'user2', 'user2@user2.com'], ['user3', 'user3', 'user3@user3.com'], ['user4', 'user4', 'user4@user4.com'], ['user5', 'user5', 'user5@user5.com'], ['user6', 'user6', 'user6@user6.com'], ['user7', 'user7', 'user7@user7.com'], ['user8', 'user8', 'user8@user8.com'], ['user9', 'user9', 'user9@user9.com'], ['user10', 'user10', 'user10@user10.com']]
+        amaizon_superusers = [['admin123', 'admin123', 'admin123@admin123.com']]
 
         #El tamaño de esta tupla debe ser menor que las de users y products para que funcione la populación
         amaizon_assessment = [['I love it', '4', '2017-10-05 10:00:00'],
@@ -86,6 +87,15 @@ class Command(BaseCommand):
         #for e in range(len(amaizon_assessment)):
          #   a = Assessment(comment=amaizon_assessment[e][0], score=amaizon_assessment[e][1], product=p[e], user=u[e])
           #  a.save()
+
+        for z in range(len(amaizon_superusers)):
+            u = User.objects.create_user(username=amaizon_superusers[z][0], email=amaizon_superusers[z][2], password=amaizon_superusers[z][1])
+            u.is_staff = True
+            u.is_admin = True
+            u.is_superuser = True
+            u.save()
+            user_profile = UserProfile(user=u)
+            user_profile.save()
 
     def handle(self, *args, **options):
         self._create_products()
