@@ -7,6 +7,12 @@ from django.core.validators import MaxValueValidator,  MinValueValidator
 
 # Create your models here.
 
+class Neighbours(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    idUser = models.IntegerField
+    sim = models.FloatField
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     picture = models.FileField(blank=True)

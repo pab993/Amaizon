@@ -3,7 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import UserForm, ProfileForm1, ProfileForm2, AssessmentForm
-from .models import Product, UserProfile, Assessment
+from .models import Product, UserProfile, Assessment, User, Neighbours
+from django.contrib.auth.decorators import login_required, permission_required
 import random
 
 # Create your views here.
@@ -278,3 +279,26 @@ def detail(request, product_id):
         return render(request, 'products/detail.html', {'product': product, 'user': user, 'userprofile': userprofile,
                                                         'assessments': assessments, 'form': form,
                                                         'exist_assessment': exist_assessment})
+
+
+@login_required
+@permission_required('is_superuser')
+def control(request):
+    user = request.user
+    userprofile = UserProfile.objects.get(user=user)
+    if request.method == 'POST':
+        users_list = User.objects.all().exclude(id=user.id)
+        products_list = Product.objects.all()
+        Neighbours.objects.all().delete()
+        for u in users_list:
+            total1 = 0
+            avg1 = 0.0
+            assessments1 = Assessment.objects.filter(user=u)
+            for a in assessments1:
+                total1 += a.score
+            avg1 = total1/len(products_list)
+            print('El usuario ' + u.username + ' tiene una media de ')
+            print(avg1)
+            print('-------------------------------------------------')
+    context = {'user': user, 'userprofile': userprofile}
+    return render(request, 'products/controlPanel.html', context)

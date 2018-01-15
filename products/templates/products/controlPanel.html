@@ -1,0 +1,21 @@
+{% extends 'products/base.html' %}
+{% block title %}Control Panel{% endblock %}
+{% load staticfiles %}
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row vertical-offset-200">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <strong><p>Welcome to the control panel. From here you can calculate the neighborhood of the users for the recommended products. It is advisable to carry out this operation relatively frequently to ensure a better recommendation of products to users.</p></strong>
+
+                    <br>
+                    <a href="#" class="btn btn-info" role="button">Calculate</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
