@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import UserForm, ProfileForm1, ProfileForm2, AssessmentForm
 from .models import Product, UserProfile, Assessment, User, Neighbours
 from django.contrib.auth.decorators import login_required, permission_required
-import random
+import random, math
 
 # Create your views here.
 
@@ -284,21 +284,57 @@ def detail(request, product_id):
 @login_required
 @permission_required('is_superuser')
 def control(request):
+    context = {}
     user = request.user
     userprofile = UserProfile.objects.get(user=user)
-    if request.method == 'POST':
-        users_list = User.objects.all().exclude(id=user.id)
-        products_list = Product.objects.all()
-        Neighbours.objects.all().delete()
-        for u in users_list:
+    if request.method == 'POST':                                                        #Si pulsamos en calcular cae aquí
+        users_list = User.objects.all().exclude(id=user.id)                             #Recuperamos la lista de todos los usuarios menos el del admin
+        products_list = Product.objects.all()                                           #Recuperamos la lista de todos los productos
+        Neighbours.objects.all().delete()                                               #Eliminamos todos los registros de similitudes anteriores
+        for u1 in users_list:                                                           #Recorremos la lista de todos los usuarios para ir rellenado sus registros nuevos
             total1 = 0
-            avg1 = 0.0
-            assessments1 = Assessment.objects.filter(user=u)
-            for a in assessments1:
-                total1 += a.score
-            avg1 = total1/len(products_list)
-            print('El usuario ' + u.username + ' tiene una media de ')
-            print(avg1)
-            print('-------------------------------------------------')
-    context = {'user': user, 'userprofile': userprofile}
+            assessments1 = Assessment.objects.filter(user=u1)
+            for a1 in assessments1:
+                total1 += a1.score
+            avg1 = total1 / len(products_list)                                          #Calculamos la media del usuario1
+            total2 = 0
+            users_list2 = User.objects.all().exclude(id__in=[user.id, u1.id])           #Recuperamos la lista de usuarios pero ahora sin el usuario1
+            for u2 in users_list2:                                                      #Recorremos la lista nueva sin el usuario1
+                assessments2 = Assessment.objects.filter(user=u2)
+                for a2 in assessments2:
+                    total2 += a2.score
+                avg2 = total2 / len(products_list)                                      #Calculamos la media del siguiente usuario
+                numeradorTotal = 0.0
+                denominador1 = 0.0
+                denominador2 = 0.0
+                denominadorTotal1 = 0.0
+                denominadorTotal2 = 0.0
+                similitud = 0.0
+                for p in products_list:                                                 #Recorremos la lista de productos para aplicar el sumatorio
+                    assessment1 = Assessment.objects.filter(user=u1, product=p).first()
+                    if assessment1 is None:
+                        score1 = 0
+                    else:
+                        score1 = assessment1.score
+                    assessment2 = Assessment.objects.filter(user=u2, product=p).first()
+                    if assessment2 is None:
+                        score2 = 0
+                    else:
+                        score2 = assessment2.score
+                    numerador1 = score1 - avg1
+                    numerador2 = score2 - avg2
+                    multNumerador = numerador1 * numerador2
+                    numeradorTotal += multNumerador
+                    denominador1 += (score1 - avg1) * (score1 - avg1)
+                    denominador2 += (score2 - avg2) * (score2 - avg2)
+                denominadorTotal1 = math.sqrt(denominador1)
+                denominadorTotal2 = math.sqrt(denominador2)
+                if numeradorTotal == 0 or denominadorTotal1 == 0 or denominadorTotal2 == 0:
+                    similitud = 0
+                else:
+                    similitud = numeradorTotal / (denominadorTotal1 * denominadorTotal2)
+                neighbour = Neighbours.objects.create(user=u1, idUser=u2.id, sim=similitud)
+                neighbour.save()
+        context.update({'success': 'Operation carried out successfully'})
+    context.update({'user': user, 'userprofile': userprofile})
     return render(request, 'products/controlPanel.html', context)

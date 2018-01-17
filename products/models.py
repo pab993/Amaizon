@@ -8,9 +8,9 @@ from django.core.validators import MaxValueValidator,  MinValueValidator
 # Create your models here.
 
 class Neighbours(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    idUser = models.IntegerField
-    sim = models.FloatField
+    user = models.ForeignKey(User)
+    idUser = models.IntegerField(null=True)
+    sim = models.FloatField(null=True)
 
 
 class UserProfile(models.Model):

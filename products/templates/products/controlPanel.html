@@ -6,12 +6,20 @@
 <div class="container-fluid">
     <div class="row vertical-offset-200">
         <div class="col-md-8 col-md-offset-2">
+            {% if success %}
+                <div class="alert alert-success alert-dismissable">
+                    {{ success }}
+                </div>
+            {% endif %}
             <div class="panel panel-default">
                 <div class="panel-body">
                     <strong><p>Welcome to the control panel. From here you can calculate the neighborhood of the users for the recommended products. It is advisable to carry out this operation relatively frequently to ensure a better recommendation of products to users.</p></strong>
 
                     <br>
-                    <a href="#" class="btn btn-info" role="button">Calculate</a>
+                    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-info">Calculate</button>
+                    </form>
                 </div>
             </div>
         </div>
