@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import UserForm, ProfileForm1, ProfileForm2, AssessmentForm
-from .models import Product, UserProfile, Assessment, User, Neighbours
+from .forms import UserForm, ProfileForm1, ProfileForm2, AssessmentForm, ControlPanelForm
+from .models import Product, UserProfile, Assessment, User, Neighbours, ControlPanel
 from django.contrib.auth.decorators import login_required, permission_required
 import random, math
+from django.db.models import Count
 
 # Create your views here.
 
@@ -287,9 +288,15 @@ def control(request):
     context = {}
     user = request.user
     userprofile = UserProfile.objects.get(user=user)
-    if request.method == 'POST':                                                        #Si pulsamos en calcular cae aquí
+    form = ControlPanelForm(request.POST or None, instance=ControlPanel.objects.all().first())
+    if request.method == 'POST':
+        if form.is_valid():
+            controlPanel = form.save(commit=False)
+            controlPanel.save()
         users_list = User.objects.all().exclude(id=user.id)                             #Recuperamos la lista de todos los usuarios menos el del admin
-        products_list = Product.objects.all()                                           #Recuperamos la lista de todos los productos
+        #products_list = Product.objects.all()                                           #Recuperamos la lista de todos los productos
+        cp = ControlPanel.objects.all().first()
+        products_list = Product.objects.annotate(ass_count=Count('assessment')).filter(ass_count__gte=cp.threshold)
         Neighbours.objects.all().delete()                                               #Eliminamos todos los registros de similitudes anteriores
         for u1 in users_list:                                                           #Recorremos la lista de todos los usuarios para ir rellenado sus registros nuevos
             total1 = 0
@@ -336,5 +343,5 @@ def control(request):
                 neighbour = Neighbours.objects.create(user=u1, idUser=u2.id, sim=similitud)
                 neighbour.save()
         context.update({'success': 'Operation carried out successfully'})
-    context.update({'user': user, 'userprofile': userprofile})
+    context.update({'user': user, 'userprofile': userprofile, 'form': form})
     return render(request, 'products/controlPanel.html', context)

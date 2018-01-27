@@ -6,6 +6,9 @@ from django.core.validators import MaxValueValidator,  MinValueValidator
 
 
 # Create your models here.
+class ControlPanel(models.Model):
+    threshold = models.IntegerField(validators=[MinValueValidator(1)])
+
 
 class Neighbours(models.Model):
     user = models.ForeignKey(User)

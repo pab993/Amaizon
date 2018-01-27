@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from products.models import Product, Assessment, UserProfile
+from products.models import Product, Assessment, UserProfile, ControlPanel
 from django.contrib.auth.models import User
 from django.core.files import File
 
@@ -96,6 +96,9 @@ class Command(BaseCommand):
             u.save()
             user_profile = UserProfile(user=u)
             user_profile.save()
+
+        cp = ControlPanel(threshold=1)
+        cp.save()
 
     def handle(self, *args, **options):
         self._create_products()

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms
-from .models import Product, Assessment, UserProfile
+from .models import Product, Assessment, UserProfile, ControlPanel
 
 
 class ProductForm(forms.ModelForm):
@@ -75,3 +75,17 @@ class AssessmentForm(forms.ModelForm):
     class Meta:
         model = Assessment
         fields = ['comment', 'score', 'product']
+
+
+class ControlPanelForm(forms.ModelForm):
+    threshold = forms.IntegerField(required=True, min_value=1)
+
+    def clean(self):
+        cp = self.cleaned_data
+        if cp.get('threshold') is None:
+            self.add_error('threshold', "Cannot be empty")
+        return cp
+
+    class Meta:
+        model = ControlPanel
+        fields = ['threshold']

@@ -14,10 +14,13 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <strong><p>Welcome to the control panel. From here you can calculate the neighborhood of the users for the recommended products. It is advisable to carry out this operation relatively frequently to ensure a better recommendation of products to users.</p></strong>
+                    <strong><p>The threshold will determine which products could appear on the web as recommended. The threshold number depends on the number of reviews a product possesses.</p></strong>
 
                     <br>
                     <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
+                        {% include 'products/form_template.html' %}
+                        <br>
                         <button type="submit" class="btn btn-info">Calculate</button>
                     </form>
                 </div>
