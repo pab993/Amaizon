@@ -340,8 +340,34 @@ def control(request):
                     similitud = 0
                 else:
                     similitud = numeradorTotal / (denominadorTotal1 * denominadorTotal2)
-                neighbour = Neighbours.objects.create(user=u1, idUser=u2.id, sim=similitud)
-                neighbour.save()
+                if similitud > 0:
+                    neighbour = Neighbours.objects.create(user=u1, idUser=u2.id, sim=similitud)
+                    neighbour.save()
         context.update({'success': 'Operation carried out successfully'})
     context.update({'user': user, 'userprofile': userprofile, 'form': form})
     return render(request, 'products/controlPanel.html', context)
+
+
+# LLamadas a otros metodos suplementarios
+# ========================================================================================================
+
+def prediction(u):
+    #Declaro las variables
+    total = 0
+    cp = ControlPanel.objects.all().first()                                                                                #Recupero el umbral de reviews mínimas
+    products_list_full = Product.objects.all()                                                                             #Todos los productos
+    products_no_reviewed = []                                                                                              #Todos los productos que el usuario no ha puntuado
+    products_list_th = Product.objects.annotate(ass_count=Count('assessment')).filter(ass_count__gte=cp.threshold)         #Los productos que cumplen con el umbral mínimo
+    #Calculo la media del usuario logueado
+    assessments = Assessment.objects.filter(user=u)
+    for a in assessments:
+        total += a.score
+    avg = total / len(products_list_th)
+    #Filtro a sólo los productos que no ha puntuado el usuario
+    for p in products_list_full:
+        assessment = Assessment.objects.filter(user=u, product=p).first()
+        if assessment is None:
+            products_no_reviewed.append(p)
+    #Aquí empieza la predicción
+    for p2 in products_no_reviewed:
+        print("Hola")
