@@ -39,12 +39,10 @@ class Command(BaseCommand):
                               ["Meh... I've seen better things", '1', '2017-10-11 12:30:00'],
                               ['No estoy satisfecho, pero era lo que esperaba', '2', '2017-11-01 16:45:00'],
                               ["It's very good, everybody that loves games should try this one", '4', '2017-10-28 12:30:00'],
-                              ["This is a very long comment, because I want to make a good review of this game. Well, actually, I've never play this game but my friends told me that it's great so... I guess it's good. Ok, I lied... I don't have any friends...", '5', '2017-11-05 19:22:00']]
-
-        #amaizon_assessment2 = [['This is awesome', '5'], ["It's a good game indeed", '4'],
-         #                     ["Meh... I've seen better things", '1'],
-          #                    ['No estoy satisfecho, pero era lo que esperaba', '2'],
-           #                   ["It's very good, everybody that loves games should try this one", '4'],]
+                              ["This is a very long comment, because I want to make a good review of this game. Well, actually, I've never play this game but my friends told me that it's great so... I guess it's good. Ok, I lied... I don't have any friends...", '5', '2017-11-05 19:22:00'],
+                              ["Cuphead is a mater piece, a great work of art", "5", "2017-11-25 14:00:21"],
+                              ["The binding of isaac is a game very hard but the effort is worth it", "4", "2016-04-10 17:43:22"],
+                              ["Miyazaki is the boss of FromSoftware. I love every game of him", "5", "2016-05-11 01:32:11"]]
 
         for i in range(len(amaizon_products)):
             f = open(amaizon_products[i][3], 'rb')
@@ -83,10 +81,13 @@ class Command(BaseCommand):
         a9.save()
         a10 = Assessment(comment=amaizon_assessment[10][0], score=amaizon_assessment[10][1], post_date=amaizon_assessment[10][2], product=p[5], user=u[9])
         a10.save()
-
-        #for e in range(len(amaizon_assessment)):
-         #   a = Assessment(comment=amaizon_assessment[e][0], score=amaizon_assessment[e][1], product=p[e], user=u[e])
-          #  a.save()
+        #Nuevas reviews
+        a11 = Assessment(comment=amaizon_assessment[11][0], score=amaizon_assessment[11][1], post_date=amaizon_assessment[11][2], product=p[3], user=u[4])
+        a11.save()
+        a12 = Assessment(comment=amaizon_assessment[12][0], score=amaizon_assessment[12][1], post_date=amaizon_assessment[12][2], product=p[4], user=u[2])
+        a12.save()
+        a13 = Assessment(comment=amaizon_assessment[13][0], score=amaizon_assessment[13][1], post_date=amaizon_assessment[13][2], product=p[7], user=u[2])
+        a13.save()
 
         for z in range(len(amaizon_superusers)):
             u = User.objects.create_user(username=amaizon_superusers[z][0], email=amaizon_superusers[z][2], password=amaizon_superusers[z][1])

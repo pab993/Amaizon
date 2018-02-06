@@ -15,7 +15,7 @@ def login_page(request):
     if request.user.is_authenticated():                                         # Comprobamos si está logueado, en caso de que lo esté,
         userprofile = UserProfile.objects.get(user=request.user)
         productsRandom = Product.objects.all().order_by('?').distinct()[:6]     # Nos redirige a la página principal junto con los productos.
-        products_list = Product.objects.all()
+        products_list = Product.objects.all().order_by('-pub_date')
         paginator = Paginator(products_list, 4)
         page = request.GET.get('page')
         try:
@@ -180,6 +180,8 @@ def index(request):
     if not request.user.is_authenticated():
         return render(request, 'products/login_page.html')
     else:
+        product_recomended = prediction(request.user)
+        print(product_recomended)
         products_list = Product.objects.all().order_by('-pub_date')
         productsRandom = Product.objects.all().order_by('?').distinct()[:6]
         query = request.GET.get("q")
@@ -434,25 +436,51 @@ def prediction(u):
     products_list_th = Product.objects.annotate(ass_count=Count('assessment')).filter(ass_count__gte=cp.threshold)         #Los productos que cumplen con el umbral mínimo
     #Calculo la media del usuario logueado
     assessments = Assessment.objects.filter(user=u)
-    for a in assessments:
-        total += a.score
-    avg = total / len(assessments)
+    avg = average(assessments)
     #Filtro a sólo los productos que no ha puntuado el usuario
-    for p in products_list_full:
+    for p in products_list_full:                                                                                           #¿Pongo aquí otro filtro para los productos que cumplan con el mínimo umbral?
         assessment = Assessment.objects.filter(user=u, product=p).first()
         if assessment is None:
             products_no_reviewed.append(p)
     #Aquí empieza la predicción
-    totalNumerador = 0
-    if u.Neighbours and products_no_reviewed:
-        for v in u.Neighbours:
-            total2 = 0
-            assessments2 = Assessment.objects.filter(user_id=v.idUser)
-            for a2 in assessments2:
-                total2 += a2.score
-            avg2 = total2 / len(assessments2)
-            for p2 in products_no_reviewed:
+    #totalNumerador = 0.0
+    #totalDenominador = 0.0
+    vecinos = Neighbours.objects.filter(user=u)
+    if vecinos and products_no_reviewed:
+        products_predictions = {}
+        for p2 in products_no_reviewed:
+            prediccion = 0.0
+            totalNumerador = 0.0
+            totalDenominador = 0.0
+            for v in vecinos:
+                print(v.sim)
+                print(v.idUser)
+                total2 = 0
+                assessments2 = Assessment.objects.filter(user_id=v.idUser)
+                avg2 = average(assessments2)
                 userVecino = User.objects.get(pk=v.idUser)
-                assessment2 = Assessment.objects.filter(user=userVecino, product=p2).first()
+                assessment2 = Assessment.objects.filter(user=userVecino, product=p2).first()                            #Aquí miro que el producto que no he valorado sí haya sido valorado por mi vecino
                 if assessment2:
+                    print("ey")
+                    print(p2.name)
                     totalNumerador += v.sim * (assessment2.score - avg2)
+                    totalDenominador += v.sim
+            if totalDenominador != 0:
+                prediccion = avg + (totalNumerador / totalDenominador)
+                products_predictions[p2] = prediccion
+        if products_predictions:
+            #max_value = max(products_predictions.keys())
+            #best_prediction = products_predictions.get(max_value)
+            best_prediction = [key for key, val in products_predictions.items() if val == max(products_predictions.values())]
+            return best_prediction
+
+
+def average(assessments):
+    total = 0
+    for a in assessments:
+        total += a.score
+    if total == 0:
+        avg = 0
+    else:
+        avg = total / len(assessments)
+    return avg
