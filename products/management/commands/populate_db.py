@@ -42,7 +42,20 @@ class Command(BaseCommand):
                               ["This is a very long comment, because I want to make a good review of this game. Well, actually, I've never play this game but my friends told me that it's great so... I guess it's good. Ok, I lied... I don't have any friends...", '5', '2017-11-05 19:22:00'],
                               ["Cuphead is a mater piece, a great work of art", "5", "2017-11-25 14:00:21"],
                               ["The binding of isaac is a game very hard but the effort is worth it", "4", "2016-04-10 17:43:22"],
-                              ["Miyazaki is the boss of FromSoftware. I love every game of him", "5", "2016-05-11 01:32:11"]]
+                              ["Miyazaki is the boss of FromSoftware. I love every game of him", "5", "2016-05-11 01:32:11"],
+                              ["I don't like cuphead because I don't like plataform games", "1", "2017-09-21 20:12:21"],
+                              ["I love all the games of Zelda", "5", "2017-12-11 12:12:12"],
+                              ["This game is very expensive", "2", "2015-12-02 08:00:12"],
+                              ["This game is innapropiate. It should be for adults.", "1", "2016-03-03 11:23:22"],
+                              ["Undertale is the best indi game I've ever played, 10/10", "5", "2015-08-20 10:09:10"],
+                              ["Watch dogs is a magnificent game. I recommend it highly.", "4", "2016-04-01 12:55:11"],
+                              ["The best RPG ever created", "5", "2014-12-28 13:13:13"],
+                              ["This is a great game", "5", "2017-07-22 09:22:00"],
+                              ["This game sucks. I prefer the fifa because I don't have any idea about games", "1", "2017-07-12 05:45:22"],
+                              ["¿Bloodborne? More like BloodBored", "2", "2017-01-12 15:34:09"],
+                              ["This game is overrated, but still it is a good game", "3", "2017-03-05 21:22:22"],
+                              ["Haha, This game it's so funny! Because it's very bad >:(", "1", "2015-06-03 22:50:45"],
+                              ["I'm still waiting for the remake, The hero of Time", "4", "2016-10-29 23:02:56"]]
 
         for i in range(len(amaizon_products)):
             f = open(amaizon_products[i][3], 'rb')
@@ -88,6 +101,44 @@ class Command(BaseCommand):
         a12.save()
         a13 = Assessment(comment=amaizon_assessment[13][0], score=amaizon_assessment[13][1], post_date=amaizon_assessment[13][2], product=p[7], user=u[2])
         a13.save()
+        a14 = Assessment(comment=amaizon_assessment[14][0], score=amaizon_assessment[14][1], post_date=amaizon_assessment[14][2], product=p[3], user=u[0])
+        a14.save()
+        a15 = Assessment(comment=amaizon_assessment[15][0], score=amaizon_assessment[15][1],
+                         post_date=amaizon_assessment[15][2], product=p[5], user=u[0])
+        a15.save()
+        a16 = Assessment(comment=amaizon_assessment[16][0], score=amaizon_assessment[16][1],
+                         post_date=amaizon_assessment[16][2], product=p[6], user=u[0])
+        a16.save()
+        a17 = Assessment(comment=amaizon_assessment[17][0], score=amaizon_assessment[17][1],
+                         post_date=amaizon_assessment[17][2], product=p[4], user=u[1])
+        a17.save()
+        a18 = Assessment(comment=amaizon_assessment[18][0], score=amaizon_assessment[18][1],
+                         post_date=amaizon_assessment[18][2], product=p[2], user=u[1])
+        a18.save()
+        a19 = Assessment(comment=amaizon_assessment[19][0], score=amaizon_assessment[19][1],
+                         post_date=amaizon_assessment[19][2], product=p[6], user=u[2])
+        a19.save()
+        a20 = Assessment(comment=amaizon_assessment[20][0], score=amaizon_assessment[20][1],
+                         post_date=amaizon_assessment[20][2], product=p[0], user=u[2])
+        a20.save()
+        a21 = Assessment(comment=amaizon_assessment[21][0], score=amaizon_assessment[21][1],
+                         post_date=amaizon_assessment[21][2], product=p[5], user=u[3])
+        a21.save()
+        a22 = Assessment(comment=amaizon_assessment[22][0], score=amaizon_assessment[22][1],
+                         post_date=amaizon_assessment[22][2], product=p[2], user=u[3])
+        a22.save()
+        a23 = Assessment(comment=amaizon_assessment[23][0], score=amaizon_assessment[23][1],
+                         post_date=amaizon_assessment[23][2], product=p[7], user=u[3])
+        a23.save()
+        a24 = Assessment(comment=amaizon_assessment[24][0], score=amaizon_assessment[24][1],
+                         post_date=amaizon_assessment[24][2], product=p[0], user=u[4])
+        a24.save()
+        a25 = Assessment(comment=amaizon_assessment[25][0], score=amaizon_assessment[25][1],
+                         post_date=amaizon_assessment[25][2], product=p[6], user=u[4])
+        a25.save()
+        a26 = Assessment(comment=amaizon_assessment[26][0], score=amaizon_assessment[26][1],
+                         post_date=amaizon_assessment[26][2], product=p[5], user=u[4])
+        a26.save()
 
         for z in range(len(amaizon_superusers)):
             u = User.objects.create_user(username=amaizon_superusers[z][0], email=amaizon_superusers[z][2], password=amaizon_superusers[z][1])
