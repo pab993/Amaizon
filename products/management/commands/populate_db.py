@@ -55,7 +55,30 @@ class Command(BaseCommand):
                               ["¿Bloodborne? More like BloodBored", "2", "2017-01-12 15:34:09"],
                               ["This game is overrated, but still it is a good game", "3", "2017-03-05 21:22:22"],
                               ["Haha, This game it's so funny! Because it's very bad >:(", "1", "2015-06-03 22:50:45"],
-                              ["I'm still waiting for the remake, The hero of Time", "4", "2016-10-29 23:02:56"]]
+                              ["I'm still waiting for the remake, The hero of Time", "4", "2016-10-29 23:02:56"],
+                              ["I dont like it. The reason is because the draws are not of my style", "2", "2017-06-02 04:37:03"],
+                              ["For honor doesn't have dedicated server, and his community is terrible. Sorry but I have to rate this badly.", "1", "2017-02-26 09:04:45"],
+                              ["The story and the music of this game is wonderful", "5", "2015-10-05 20:53:22"],
+                              ["I can't wait to play it", "5", "2017-01-21 21:21:21"],
+                              ["Meh, I don't want to even play it", "2", "2015-04-05 22:22:23"],
+                              ["Undertale, YEAH!", "4", "2015-06-05 23:22:23"],
+                              ["Zelda! Zelda! Link! Link!", "4", "2017-06-05 21:23:12"],
+                              ["It is like DS but darker, and the combat it is faster too", "5", "2016-11-11 17:23:15"],
+                              ["Dank Sauce for the win!", "5", "2018-01-04 12:12:12"],
+                              ["The multiplayer of this game make it too easy from my point of view", "4", "2018-01-09 11:12:14"],
+                              ["It is ok I guess", "3", "2017-12-26 09:09:12"],
+                              ["Stay determinated", "3", "2017-11-20 20:14:02"],
+                              ["I recommend this game, my friends recommend it and my grandmother recommend it", "5", "2014-12-11 13:23:02"],
+                              ["I don't like anything from NINTENDO", "1", "2016-09-08 01:01:34"],
+                              ["This game is totally toxic", "2", "2017-06-11 11:11:11"],
+                              ["One of the best things about The Binding of Isaac: Rebirth is that every time I play, Isaac ends up looking and behaving radically differently", "4", "2016-12-12 13:14:15"],
+                              ["Stop making bad game ubisoft. First Warning", "1", "2015-07-28 11:34:23"],
+                              ["Bloodborne is only for PS4 sadly, but anyway is a good game", "4", "2016-12-10 12:34:56"],
+                              ["Praise the sun!", "5", "2017-08-11 16:19:45"],
+                              ["Too expensive, and the game doesnt have dedicated servers", "1", "2017-03-03 14:34:46"],
+                              ["Rogue dungeons are games with something special", "3", "2017-05-11 19:19:35"],
+                              ["Nothing innovative", "2", "2015-09-11 23:13:34"],
+                              ["Muzska, I'm still waiting for 'Poniendo a parir Bloodborne'", "5", "2018-02-01 18:45:12"]]
 
         for i in range(len(amaizon_products)):
             f = open(amaizon_products[i][3], 'rb')
@@ -139,6 +162,76 @@ class Command(BaseCommand):
         a26 = Assessment(comment=amaizon_assessment[26][0], score=amaizon_assessment[26][1],
                          post_date=amaizon_assessment[26][2], product=p[5], user=u[4])
         a26.save()
+        a27 = Assessment(comment=amaizon_assessment[27][0], score=amaizon_assessment[27][1],
+                         post_date=amaizon_assessment[27][2], product=p[3], user=u[5])
+        a27.save()
+        a28 = Assessment(comment=amaizon_assessment[28][0], score=amaizon_assessment[28][1],
+                         post_date=amaizon_assessment[28][2], product=p[1], user=u[5])
+        a28.save()
+        a29 = Assessment(comment=amaizon_assessment[29][0], score=amaizon_assessment[29][1],
+                         post_date=amaizon_assessment[29][2], product=p[2], user=u[5])
+        a29.save()
+        a30 = Assessment(comment=amaizon_assessment[30][0], score=amaizon_assessment[30][1],
+                         post_date=amaizon_assessment[30][2], product=p[5], user=u[5])
+        a30.save()
+        a31 = Assessment(comment=amaizon_assessment[31][0], score=amaizon_assessment[31][1],
+                         post_date=amaizon_assessment[31][2], product=p[6], user=u[5])
+        a31.save()
+        a32 = Assessment(comment=amaizon_assessment[32][0], score=amaizon_assessment[32][1],
+                         post_date=amaizon_assessment[32][2], product=p[2], user=u[6])
+        a32.save()
+        a33 = Assessment(comment=amaizon_assessment[33][0], score=amaizon_assessment[33][1],
+                         post_date=amaizon_assessment[33][2], product=p[5], user=u[6])
+        a33.save()
+        a34 = Assessment(comment=amaizon_assessment[34][0], score=amaizon_assessment[34][1],
+                         post_date=amaizon_assessment[34][2], product=p[7], user=u[6])
+        a34.save()
+        a35 = Assessment(comment=amaizon_assessment[35][0], score=amaizon_assessment[35][1],
+                         post_date=amaizon_assessment[35][2], product=p[0], user=u[6])
+        a35.save()
+        a36 = Assessment(comment=amaizon_assessment[36][0], score=amaizon_assessment[36][1],
+                         post_date=amaizon_assessment[36][2], product=p[3], user=u[7])
+        a36.save()
+        a37 = Assessment(comment=amaizon_assessment[37][0], score=amaizon_assessment[37][1],
+                         post_date=amaizon_assessment[37][2], product=p[1], user=u[7])
+        a37.save()
+        a38 = Assessment(comment=amaizon_assessment[38][0], score=amaizon_assessment[38][1],
+                         post_date=amaizon_assessment[38][2], product=p[2], user=u[7])
+        a38.save()
+        a39 = Assessment(comment=amaizon_assessment[39][0], score=amaizon_assessment[39][1],
+                         post_date=amaizon_assessment[39][2], product=p[4], user=u[7])
+        a39.save()
+        a40 = Assessment(comment=amaizon_assessment[40][0], score=amaizon_assessment[40][1],
+                         post_date=amaizon_assessment[40][2], product=p[5], user=u[7])
+        a40.save()
+        a41 = Assessment(comment=amaizon_assessment[41][0], score=amaizon_assessment[41][1],
+                         post_date=amaizon_assessment[41][2], product=p[1], user=u[8])
+        a41.save()
+        a42 = Assessment(comment=amaizon_assessment[42][0], score=amaizon_assessment[42][1],
+                         post_date=amaizon_assessment[42][2], product=p[4], user=u[8])
+        a42.save()
+        a43 = Assessment(comment=amaizon_assessment[43][0], score=amaizon_assessment[43][1],
+                         post_date=amaizon_assessment[43][2], product=p[6], user=u[8])
+        a43.save()
+        a44 = Assessment(comment=amaizon_assessment[44][0], score=amaizon_assessment[44][1],
+                         post_date=amaizon_assessment[44][2], product=p[7], user=u[8])
+        a44.save()
+        a45 = Assessment(comment=amaizon_assessment[45][0], score=amaizon_assessment[45][1],
+                         post_date=amaizon_assessment[45][2], product=p[0], user=u[8])
+        a45.save()
+        a46 = Assessment(comment=amaizon_assessment[46][0], score=amaizon_assessment[46][1],
+                         post_date=amaizon_assessment[46][2], product=p[1], user=u[9])
+        a46.save()
+        a47 = Assessment(comment=amaizon_assessment[47][0], score=amaizon_assessment[47][1],
+                         post_date=amaizon_assessment[47][2], product=p[4], user=u[9])
+        a47.save()
+        a48 = Assessment(comment=amaizon_assessment[48][0], score=amaizon_assessment[48][1],
+                         post_date=amaizon_assessment[48][2], product=p[6], user=u[9])
+        a48.save()
+        a49 = Assessment(comment=amaizon_assessment[49][0], score=amaizon_assessment[49][1],
+                         post_date=amaizon_assessment[49][2], product=p[7], user=u[9])
+        a49.save()
+
 
         for z in range(len(amaizon_superusers)):
             u = User.objects.create_user(username=amaizon_superusers[z][0], email=amaizon_superusers[z][2], password=amaizon_superusers[z][1])

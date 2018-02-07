@@ -16,6 +16,8 @@ def login_page(request):
         userprofile = UserProfile.objects.get(user=request.user)
         productsRandom = Product.objects.all().order_by('?').distinct()[:6]     # Nos redirige a la página principal junto con los productos.
         products_list = Product.objects.all().order_by('-pub_date')
+        product_recomended = prediction(request.user)
+        print(product_recomended)
         paginator = Paginator(products_list, 4)
         page = request.GET.get('page')
         try:
@@ -37,6 +39,8 @@ def login_user(request):
         userprofile = UserProfile.objects.get(user=request.user)
         productsRandom = Product.objects.all().order_by('?').distinct()[:6]
         products_list = Product.objects.all().order_by('-pub_date')
+        product_recomended = prediction(request.user)
+        print(product_recomended)
         paginator = Paginator(products_list, 4)
         page = request.GET.get('page')
         try:
@@ -60,6 +64,8 @@ def login_user(request):
                     userprofile = UserProfile.objects.get(user=user)
                     productsRandom = Product.objects.all().order_by('?')[:6]
                     products_list = Product.objects.all().order_by('-pub_date')
+                    product_recomended = prediction(request.user)
+                    print(product_recomended)
                     paginator = Paginator(products_list, 4)
                     page = request.GET.get('page')
                     try:
@@ -84,6 +90,8 @@ def register(request):
         userprofile = UserProfile.objects.get(user=request.user)
         productsRandom = Product.objects.all().order_by('?').distinct()[:6]
         products_list = Product.objects.all().order_by('-pub_date')
+        product_recomended = prediction(request.user)
+        print(product_recomended)
         paginator = Paginator(products_list, 4)
         page = request.GET.get('page')
         try:
@@ -160,6 +168,8 @@ def register(request):
                     products_list = Product.objects.all().order_by('-pub_date')
                     productsRandom = Product.objects.all().order_by('?').distinct()[:6]
                     userprofile = UserProfile.objects.get(user=request.user)
+                    product_recomended = prediction(user)
+                    print(product_recomended)
                     paginator = Paginator(products_list, 4)
                     page = request.GET.get('page')
                     try:
@@ -262,7 +272,7 @@ def detail(request, product_id):
         userprofile = UserProfile.objects.get(user=user)
         assessments_list = Assessment.objects.filter(product=product_id).order_by('-post_date')
         exist_assessment = Assessment.objects.filter(product=product_id, user=user).first()
-        paginator = Paginator(assessments_list, 10)
+        paginator = Paginator(assessments_list, 5)
         form = AssessmentForm(request.POST or None, instance=exist_assessment)
         if request.method == 'POST':
             if form.is_valid():
@@ -295,16 +305,16 @@ def control(request):
         if form.is_valid():
             controlPanel = form.save(commit=False)
             controlPanel.save()
-        users_list = User.objects.all().exclude(id=user.id)                             #Recuperamos la lista de todos los usuarios menos el del admin                                          #Recuperamos la lista de todos los productos
+        users_list = User.objects.all().exclude(id=user.id)                                                                 #Recuperamos la lista de todos los usuarios menos el del admin                                          #Recuperamos la lista de todos los productos
         cp = ControlPanel.objects.all().first()
         #products_list = Product.objects.annotate(ass_count=Count('assessment')).filter(ass_count__gte=cp.threshold)
-        Neighbours.objects.all().delete()                                               #Eliminamos todos los registros de similitudes anteriores
-        for u1 in users_list:                                                           #Recorremos la lista de todos los usuarios para ir rellenado sus registros nuevos
+        Neighbours.objects.all().delete()                                                                                   #Eliminamos todos los registros de similitudes anteriores
+        for u1 in users_list:                                                                                               #Recorremos la lista de todos los usuarios para ir rellenado sus registros nuevos
             assessments1 = Assessment.objects.filter(user=u1)
             if assessments1:
-                users_list2 = User.objects.all().exclude(id__in=[user.id, u1.id])           #Recuperamos la lista de usuarios pero ahora sin el usuario1
+                users_list2 = User.objects.all().exclude(id__in=[user.id, u1.id])                                           #Recuperamos la lista de usuarios pero ahora sin el usuario1
                 total1 = 0
-                for a1 in assessments1:                                                     #Calculo la media del usuario a tratar
+                for a1 in assessments1:                                                                                     #Calculo la media del usuario a tratar
                     total1 += a1.score
                 avg1 = total1 / len(assessments1)
                 total2 = 0
@@ -312,23 +322,23 @@ def control(request):
                     products_list_f = []
                     assessments2 = Assessment.objects.filter(user=u2)
                     if assessments2:
-                        for a2 in assessments2:                                                 # Calculo la media del siguiente usuario
+                        for a2 in assessments2:                                                                             # Calculo la media del siguiente usuario
                             total2 += a2.score
                         avg2 = total2 / len(assessments2)
                         productsU1 = []
                         productsU2 = []
-                        for item1 in assessments1:                                               # Filtro los productos que ambos usuarios han puntuado
+                        for item1 in assessments1:                                                                          # Filtro los productos que ambos usuarios han puntuado
                             productsU1.append(item1.product)
                         for item2 in assessments2:
                             productsU2.append(item2.product)
                         for item in productsU1:
                             if item in productsU2:
-                                products_list_f.append(item)                                        # Podrían no tener productos en común ¡OJO!
+                                products_list_f.append(item)                                                                # Podrían no tener productos en común ¡OJO!
                         numeradorTotal = 0.0
                         denominador1 = 0.0
                         denominador2 = 0.0
-                        if products_list_f:                                                 # Combruebo si la lista está vacía
-                            for p in products_list_f:                                               #Recorremos la lista de productos para aplicar el sumatorio
+                        if products_list_f:                                                                                 # Combruebo si la lista está vacía
+                            for p in products_list_f:                                                                       #Recorremos la lista de productos para aplicar el sumatorio
                                 assessment1 = Assessment.objects.filter(user=u1, product=p).first()
                                 if assessment1 is None:
                                     score1 = 0
@@ -358,71 +368,6 @@ def control(request):
     context.update({'user': user, 'userprofile': userprofile, 'form': form})
     return render(request, 'products/controlPanel.html', context)
 
-## COPIA DE SEGURIDAD
-#@login_required
-#@permission_required('is_superuser')
-#def control(request):
-#    context = {}
-#    user = request.user
-#    userprofile = UserProfile.objects.get(user=user)
-#    form = ControlPanelForm(request.POST or None, instance=ControlPanel.objects.all().first())
-#    if request.method == 'POST':
-#        if form.is_valid():
-#            controlPanel = form.save(commit=False)
-#            controlPanel.save()
-#        users_list = User.objects.all().exclude(id=user.id)                             #Recuperamos la lista de todos los usuarios menos el del admin                                          #Recuperamos la lista de todos los productos
-#        cp = ControlPanel.objects.all().first()
-#        products_list = Product.objects.annotate(ass_count=Count('assessment')).filter(ass_count__gte=cp.threshold)
-#        Neighbours.objects.all().delete()                                               #Eliminamos todos los registros de similitudes anteriores
-#        for u1 in users_list:                                                           #Recorremos la lista de todos los usuarios para ir rellenado sus registros nuevos
-#            total1 = 0
-#            assessments1 = Assessment.objects.filter(user=u1)
-#            for a1 in assessments1:
-#                total1 += a1.score
-#            avg1 = total1 / len(products_list)                                          #Calculamos la media del usuario1
-#            total2 = 0
-#            users_list2 = User.objects.all().exclude(id__in=[user.id, u1.id])           #Recuperamos la lista de usuarios pero ahora sin el usuario1
-#            for u2 in users_list2:                                                      #Recorremos la lista nueva sin el usuario1
-#                assessments2 = Assessment.objects.filter(user=u2)
-#                for a2 in assessments2:
-#                    total2 += a2.score
-#                avg2 = total2 / len(products_list)                                      #Calculamos la media del siguiente usuario
-#                numeradorTotal = 0.0
-#                denominador1 = 0.0
-#                denominador2 = 0.0
-#                denominadorTotal1 = 0.0
-#                denominadorTotal2 = 0.0
-#                similitud = 0.0
-#                for p in products_list:                                                 #Recorremos la lista de productos para aplicar el sumatorio
-#                    assessment1 = Assessment.objects.filter(user=u1, product=p).first()
-#                    if assessment1 is None:
-#                        score1 = 0
-#                    else:
-#                        score1 = assessment1.score
-#                    assessment2 = Assessment.objects.filter(user=u2, product=p).first()
-#                    if assessment2 is None:
-#                        score2 = 0
-#                    else:
-#                        score2 = assessment2.score
-#                    numerador1 = score1 - avg1
-#                    numerador2 = score2 - avg2
-#                    multNumerador = numerador1 * numerador2
-#                    numeradorTotal += multNumerador
-#                    denominador1 += (score1 - avg1) * (score1 - avg1)
-#                    denominador2 += (score2 - avg2) * (score2 - avg2)
-#                denominadorTotal1 = math.sqrt(denominador1)
-#                denominadorTotal2 = math.sqrt(denominador2)
-#                if numeradorTotal == 0 or denominadorTotal1 == 0 or denominadorTotal2 == 0:
-#                    similitud = 0
-#                else:
-#                    similitud = numeradorTotal / (denominadorTotal1 * denominadorTotal2)
-#                if similitud > 0:
-#                    neighbour = Neighbours.objects.create(user=u1, idUser=u2.id, sim=similitud)
-#                    neighbour.save()
-#        context.update({'success': 'Operation carried out successfully'})
-#    context.update({'user': user, 'userprofile': userprofile, 'form': form})
-#    return render(request, 'products/controlPanel.html', context)
-
 
 # LLamadas a otros metodos suplementarios
 # ========================================================================================================
@@ -430,10 +375,10 @@ def control(request):
 def prediction(u):
     #Declaro las variables
     total = 0
-    cp = ControlPanel.objects.all().first()                                                                                #Recupero el umbral de reviews mínimas
+    #cp = ControlPanel.objects.all().first()                                                                                #Recupero el umbral de reviews mínimas
     products_list_full = Product.objects.all()                                                                             #Todos los productos
     products_no_reviewed = []                                                                                              #Todos los productos que el usuario no ha puntuado
-    products_list_th = Product.objects.annotate(ass_count=Count('assessment')).filter(ass_count__gte=cp.threshold)         #Los productos que cumplen con el umbral mínimo
+    #products_list_th = Product.objects.annotate(ass_count=Count('assessment')).filter(ass_count__gte=cp.threshold)         #Los productos que cumplen con el umbral mínimo
     #Calculo la media del usuario logueado
     assessments = Assessment.objects.filter(user=u)
     avg = average(assessments)
@@ -445,32 +390,30 @@ def prediction(u):
     #Aquí empieza la predicción
     #totalNumerador = 0.0
     #totalDenominador = 0.0
-    vecinos = Neighbours.objects.filter(user=u)
+    vecinos = Neighbours.objects.filter(user=u)                                                                             # Recupero los vecinos del usuario logueado
     if vecinos and products_no_reviewed:
         products_predictions = {}
-        for p2 in products_no_reviewed:
+        for p2 in products_no_reviewed:                                                                                     # Recorro los productos que no he puntuado
             prediccion = 0.0
             totalNumerador = 0.0
             totalDenominador = 0.0
-            for v in vecinos:
-                print(v.sim)
-                print(v.idUser)
+            for v in vecinos:                                                                                               # Recorro a mis vecinos semejantes
+                #print(v.sim)
+                #print(v.idUser)
                 total2 = 0
                 assessments2 = Assessment.objects.filter(user_id=v.idUser)
                 avg2 = average(assessments2)
                 userVecino = User.objects.get(pk=v.idUser)
                 assessment2 = Assessment.objects.filter(user=userVecino, product=p2).first()                            #Aquí miro que el producto que no he valorado sí haya sido valorado por mi vecino
                 if assessment2:
-                    print("ey")
-                    print(p2.name)
+                    #print("ey")
+                    #print(p2.name)
                     totalNumerador += v.sim * (assessment2.score - avg2)
                     totalDenominador += v.sim
             if totalDenominador != 0:
                 prediccion = avg + (totalNumerador / totalDenominador)
                 products_predictions[p2] = prediccion
         if products_predictions:
-            #max_value = max(products_predictions.keys())
-            #best_prediction = products_predictions.get(max_value)
             best_prediction = [key for key, val in products_predictions.items() if val == max(products_predictions.values())]
             return best_prediction
 
