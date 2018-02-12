@@ -7,7 +7,7 @@ from django.core.validators import MaxValueValidator,  MinValueValidator
 
 # Create your models here.
 class ControlPanel(models.Model):
-    threshold = models.IntegerField(validators=[MinValueValidator(1)])
+    threshold = models.FloatField(validators=[MinValueValidator(-1.0), MaxValueValidator(1.0)])
 
 
 class Neighbours(models.Model):

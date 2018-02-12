@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django import forms
 from .models import Product, Assessment, UserProfile, ControlPanel
+from django.forms.widgets import NumberInput
 
 
 class ProductForm(forms.ModelForm):
@@ -78,7 +79,7 @@ class AssessmentForm(forms.ModelForm):
 
 
 class ControlPanelForm(forms.ModelForm):
-    threshold = forms.IntegerField(required=True, min_value=1)
+    threshold = forms.FloatField(required=True, min_value=-1.0, max_value=1.0, widget=NumberInput(attrs={'step': "0.01"}))
 
     def clean(self):
         cp = self.cleaned_data

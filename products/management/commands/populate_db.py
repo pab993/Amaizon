@@ -242,7 +242,7 @@ class Command(BaseCommand):
             user_profile = UserProfile(user=u)
             user_profile.save()
 
-        cp = ControlPanel(threshold=1)
+        cp = ControlPanel(threshold=0.00)
         cp.save()
 
     def handle(self, *args, **options):
