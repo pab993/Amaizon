@@ -22,11 +22,11 @@
 
                 </div>
                 <div class="ratings">
+                    {% if product.was_published_recently %}
+                        <img src="{% static 'products/images/new.png' %}" width="100" height="100" class="img-responsive"/>
+                    {% endif %}
                     {% if product.avg_rating == -1 %}
-                        {% if product.was_published_recently %}
-                            <img src="{% static 'products/images/new.png' %}" width="100" height="100" class="img-responsive"/>
-                        {% endif %}
-                        <p style="color:#FF0000"><strong><i>Nobody rate this yet. Be the first!</i></strong></p>
+                        <p class="center" style="color:#FF0000"><strong><i>Nobody rate this yet. Be the first!</i></strong></p>
                     {% elif product.avg_rating == 0 %}
                         <p>
                             <span class="glyphicon glyphicon-star-empty"></span>
@@ -124,7 +124,7 @@
             {% endif %}
         </div>
     {% else %}
-        <h1>There are not products available</h1>
+        <h1 class="center">There are not products available</h1>
     {% endif %}
 
 <div class="container">
@@ -147,7 +147,7 @@
 
                   {% else %}
 
-                        <h3>There are not recommended products available</h3>
+                        <h3>There are not recommended products</h3>
 
                   {% endif %}
               </ul>
