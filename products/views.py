@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import UserForm, ProfileForm1, ProfileForm2, AssessmentForm, ControlPanelForm
+from .forms import UserForm, ProfileForm1, ProfileForm2, AssessmentForm, ControlPanelForm, ProductForm2
 from .models import Product, UserProfile, Assessment, User, Neighbours, ControlPanel
 from django.contrib.auth.decorators import login_required, permission_required
 import random, math
@@ -87,6 +87,7 @@ def login_user(request):
 
 def register(request):
     if request.user.is_authenticated():
+        print("Adios")
         userprofile = UserProfile.objects.get(user=request.user)
         #productsRandom = Product.objects.all().order_by('?').distinct()[:6]
         products_list = Product.objects.all().order_by('-pub_date')
@@ -107,6 +108,7 @@ def register(request):
     else:
         context = {}
         if request.method == "POST":
+            print("Se hace el post")
             form2 = AssessmentForm(request.POST, prefix='Review1')
             form3 = AssessmentForm(request.POST, prefix='Review2')
             form4 = AssessmentForm(request.POST, prefix='Review3')
@@ -137,6 +139,7 @@ def register(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user.set_password(password)
+            print("Hola")
             user.save()
             user_profile = UserProfile(user=user)
             user_profile.save()
@@ -369,6 +372,70 @@ def control(request):
     return render(request, 'products/controlPanel.html', context)
 
 
+@login_required
+@permission_required('is_superuser')
+def newgame(request, product_id=None):
+    if request.user.is_authenticated:
+        user = request.user
+        userprofile = UserProfile.objects.get(user=user)
+        exist_product = Product.objects.filter(pk=product_id).first()
+        form = ProductForm2(request.POST or None, request.FILES or None, instance=exist_product)
+        if request.method == "POST":
+            if form.is_valid():
+                product = form.save(commit=False)
+                product.save()
+                product_recomended = prediction(request.user)
+                products_list = Product.objects.all().order_by('-pub_date')
+                paginator = Paginator(products_list, 4)
+                page = request.GET.get('page')
+                try:
+                    products = paginator.page(page)
+                except PageNotAnInteger:
+                    # If page is not an integer, deliver first page.
+                    products = paginator.page(1)
+                except EmptyPage:
+                    # If page is out of range (e.g. 9999), deliver last page of results.
+                    products = paginator.page(paginator.num_pages)
+                context = {"products": products, "userprofile": userprofile, "productsRandom": product_recomended}
+                if exist_product:
+                    context.update({'success': 'Game edited correctly.'})
+                else:
+                    context.update({'success': 'Game created correctly.'})
+                return render(request, 'products/index.html', context)
+        else:
+            form = ProductForm2(instance=exist_product)
+        context = {"form": form, "userprofile": userprofile}
+        return render(request, 'products/new_game.html', context)
+    else:
+        return render(request, 'products/login_page.html')
+
+
+@login_required
+@permission_required('is_superuser')
+def deletegame(request, product_id):
+    if request.user.is_authenticated:
+        user = request.user
+        userprofile = UserProfile.objects.get(user=user)
+        Product.objects.filter(pk=product_id).delete()
+        product_recomended = prediction(request.user)
+        products_list = Product.objects.all().order_by('-pub_date')
+        paginator = Paginator(products_list, 4)
+        page = request.GET.get('page')
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            products = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            products = paginator.page(paginator.num_pages)
+        context = {"products": products, "userprofile": userprofile, "productsRandom": product_recomended,
+                   'success': 'Game deleted correctly.'}
+        return render(request, 'products/index.html', context)
+    else:
+        return render(request, 'products/login_page.html')
+
+
 # LLamadas a otros metodos suplementarios
 # ========================================================================================================
 
@@ -418,4 +485,3 @@ def average(assessments):
     else:
         avg = total / len(assessments)
     return avg
-

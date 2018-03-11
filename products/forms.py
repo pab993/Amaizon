@@ -2,9 +2,24 @@ from django.contrib.auth.models import User
 from django import forms
 from .models import Product, Assessment, UserProfile, ControlPanel
 from django.forms.widgets import NumberInput
+from functools import partial
+
+DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 
 
 class ProductForm(forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'price', 'picture', 'pub_date']
+
+
+class ProductForm2(forms.ModelForm):
+    name = forms.CharField(max_length=100)
+    description = forms.CharField(max_length=1000)
+    price = forms.FloatField(required=True, min_value=0.0, max_value=100000.0,)
+    picture = forms.FileField(required=True)
+    pub_date = forms.DateTimeField(widget=DateInput())
 
     class Meta:
         model = Product

@@ -11,4 +11,7 @@ urlpatterns = [
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^product/(?P<product_id>[0-9]+)/$', views.detail, name='detail'),
     url(r'^controlPanel/$', views.control, name='control'),
+    url(r'^editProduct/$', views.newgame, name='editProduct'),
+    url(r'^editProduct/(?P<product_id>[0-9]+)/$', views.newgame, name='editProduct'),
+    url(r'^deleteProduct/(?P<product_id>[0-9]+)/$', views.deletegame, name='deleteProduct'),
 ]
