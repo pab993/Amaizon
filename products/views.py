@@ -315,19 +315,13 @@ def control(request):
         for u1 in users_list:                                                                                               #Recorremos la lista de todos los usuarios para ir rellenado sus registros nuevos
             assessments1 = Assessment.objects.filter(user=u1)
             if assessments1:
-                users_list2 = User.objects.all().exclude(id__in=[user.id, u1.id], is_superuser=True)                                           #Recuperamos la lista de usuarios pero ahora sin el usuario1
-                total1 = 0
-                for a1 in assessments1:                                                                                     #Calculo la media del usuario a tratar
-                    total1 += a1.score
-                avg1 = total1 / len(assessments1)
-                total2 = 0
+                users_list2 = User.objects.exclude(id__in=[user.id, u1.id])                                           #Recuperamos la lista de usuarios pero ahora sin el usuario1
+                avg1 = average(assessments1)
                 for u2 in users_list2:
                     products_list_f = []
                     assessments2 = Assessment.objects.filter(user=u2)
                     if assessments2:
-                        for a2 in assessments2:                                                                             # Calculo la media del siguiente usuario
-                            total2 += a2.score
-                        avg2 = total2 / len(assessments2)
+                        avg2 = average(assessments2)
                         productsU1 = []
                         productsU2 = []
                         for item1 in assessments1:                                                                          # Filtro los productos que ambos usuarios han puntuado
@@ -341,6 +335,9 @@ def control(request):
                         denominador1 = 0.0
                         denominador2 = 0.0
                         if products_list_f:                                                                                 # Combruebo si la lista está vacía
+                            numeradorTotal = 0
+                            denominador1 = 0
+                            denominador2 = 0
                             for p in products_list_f:                                                                       #Recorremos la lista de productos para aplicar el sumatorio
                                 assessment1 = Assessment.objects.filter(user=u1, product=p).first()
                                 if assessment1 is None:
@@ -355,16 +352,25 @@ def control(request):
                                 numerador1 = score1 - avg1
                                 numerador2 = score2 - avg2
                                 multNumerador = numerador1 * numerador2
+                                #if u1.username == 'user1' and u2.username == 'user3':
+                                    #print(avg1, avg2)
+                                    #print("---------------------------------------------")
                                 numeradorTotal += multNumerador
+                                #print(numeradorTotal)
                                 denominador1 += (score1 - avg1) * (score1 - avg1)
                                 denominador2 += (score2 - avg2) * (score2 - avg2)
                             denominadorTotal1 = math.sqrt(denominador1)
                             denominadorTotal2 = math.sqrt(denominador2)
+                            #print("--------------------------------")
                             if numeradorTotal == 0 or denominadorTotal1 == 0 or denominadorTotal2 == 0:
                                 similitud = 0
                             else:
                                 similitud = numeradorTotal / (denominadorTotal1 * denominadorTotal2)
                             if similitud >= cp.threshold:
+                                #if u1.username == 'user4' and u2.username == 'user5':
+                                #print(numeradorTotal, denominadorTotal1*denominadorTotal2)
+                                print(u1, u2, similitud)
+                                print("---------------------------------------------")
                                 neighbour = Neighbours.objects.create(user=u1, idUser=u2.id, sim=similitud)
                                 neighbour.save()
         context.update({'success': 'Operation carried out successfully'})
