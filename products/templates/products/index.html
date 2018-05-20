@@ -97,7 +97,7 @@
                     <a href="{% url 'detail' product.id %}" class="btn btn-primary btn-sm" role="button">Reviews</a>
                     {% if userprofile.user.is_superuser %}
                         <a href="{% url 'editProduct' product.id %}" class="btn btn-warning" role="button">Edit</a>
-                        <a id="delete" href="{% url 'deleteProduct' product.id %}" class="btn btn-danger" role="button">Eliminar</a>
+                        <a id="delete" href="{% url 'deleteProduct' product.id %}" class="btn btn-danger" role="button" onclick="return confirm('Are you sure to delete this game?')">Eliminar</a>
                     {% endif %}
                 </div>
                 <div class="space-ten"></div>

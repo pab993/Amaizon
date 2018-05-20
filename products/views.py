@@ -367,10 +367,6 @@ def control(request):
                             else:
                                 similitud = numeradorTotal / (denominadorTotal1 * denominadorTotal2)
                             if similitud >= cp.threshold:
-                                #if u1.username == 'user4' and u2.username == 'user5':
-                                #print(numeradorTotal, denominadorTotal1*denominadorTotal2)
-                                print(u1, u2, similitud)
-                                print("---------------------------------------------")
                                 neighbour = Neighbours.objects.create(user=u1, idUser=u2.id, sim=similitud)
                                 neighbour.save()
         context.update({'success': 'Operation carried out successfully'})
